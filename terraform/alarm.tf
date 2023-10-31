@@ -11,6 +11,7 @@ resource "aws_cloudwatch_log_metric_filter" "ingester_error_filtering" {
 		namespace = "IngesterLogging"
 		value = "1"
 		}
+    depends_on = [ aws_cloudwatch_log_group.yada ]
 	}
 
 resource "aws_cloudwatch_metric_alarm" "ingester_alarm" {
