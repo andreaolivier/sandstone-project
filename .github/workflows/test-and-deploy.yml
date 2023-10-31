@@ -20,6 +20,9 @@ jobs:
             - name: run Security checks
               run: make security-test
 
+            - name: run autopep8
+              run: run-autopep
+
             - name: run Flake checks
               run: make run-flake
 
@@ -41,8 +44,8 @@ jobs:
             - name: install requirements
               run: make requirements
 
-            - name: set-up-dev
-              run: make dev-setup
+            # - name: set-up-dev
+            #   run: make dev-setup
 
             - name: unit tests
               run: make unit-test
