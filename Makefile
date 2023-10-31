@@ -39,25 +39,25 @@ requirements: create-environment
 	$(call execute_in_env, $(PIP) install -r ./requirements.txt)
 
 ################################################################################################################
-# Set Up
-## Install bandit
-bandit:
-	$(call execute_in_env, $(PIP) install bandit)
+# # Set Up
+# ## Install bandit
+# bandit:
+# 	$(call execute_in_env, $(PIP) install bandit)
 
-## Install safety
-safety:
-	$(call execute_in_env, $(PIP) install safety)
+# ## Install safety
+# safety:
+# 	$(call execute_in_env, $(PIP) install safety)
 
-## Install flake8
-flake:
-	$(call execute_in_env, $(PIP) install flake8)
+# ## Install flake8
+# flake:
+# 	$(call execute_in_env, $(PIP) install flake8)
 
-## Install coverage
-coverage:
-	$(call execute_in_env, $(PIP) install coverage)
+# ## Install coverage
+# coverage:
+# 	$(call execute_in_env, $(PIP) install coverage)
 
-## Set up dev requirements (bandit, safety, flake8, coverage)
-dev-setup: bandit safety flake coverage
+# ## Set up dev requirements (bandit, safety, flake8, coverage)
+# dev-setup: bandit safety flake coverage
 
 # Build / Run
 
@@ -65,6 +65,10 @@ dev-setup: bandit safety flake coverage
 security-test:
 	$(call execute_in_env, safety check -r ./requirements.txt)
 	$(call execute_in_env, bandit -lll */*.py *c/*/*.py)
+
+## Run autopep8
+run-autopep:
+	$(call execute_in_env, autopep8 --in-place --aggressive --aggressive */*.py *c/*/*.py)
 
 ## Run the flake8 code check
 run-flake:
