@@ -68,7 +68,7 @@ security-test:
 
 ## Run autopep8
 run-autopep:
-	$(call execute_in_env, autopep8 --in-place --aggressive --aggressive */*.py *c/*/*.py)
+	$(call execute_in_env, autopep8 --in-place --aggressive --aggressive */*.py)
 
 ## Run the flake8 code check
 run-flake:
