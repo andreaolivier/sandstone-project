@@ -21,7 +21,7 @@ jobs:
               run: make security-test
 
             - name: run autopep8
-              run: run-autopep
+              run: make run-autopep
 
             - name: run Flake checks
               run: make run-flake
