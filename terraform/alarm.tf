@@ -24,7 +24,7 @@ resource "aws_cloudwatch_metric_alarm" "ingester_alarm" {
     threshold = 1
     statistic = "SampleCount"
     period = 300
-    alarm_actions = ["arn:aws:sns:eu-west-2:${data.aws_caller_identity.current.account_id}:IngesterLoggingSnsTopic"]
+    alarm_actions = ["arn:aws:sns:eu-west-2:${data.aws_caller_identity.current.account_id}:ingester-logging-sns-topic"]
 }
 
 resource "aws_cloudwatch_metric_alarm" "ingester_duration_alarm" {
@@ -39,5 +39,5 @@ resource "aws_cloudwatch_metric_alarm" "ingester_duration_alarm" {
     metric_name = "Duration"
     statistic = "Maximum"
     period = 60
-    alarm_actions = ["arn:aws:sns:eu-west-2:${data.aws_caller_identity.current.account_id}:IngesterLoggingSnsTopic"]
+    alarm_actions = ["arn:aws:sns:eu-west-2:${data.aws_caller_identity.current.account_id}:ingester-logging-sns-topic"]
 }
