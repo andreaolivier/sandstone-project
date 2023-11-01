@@ -22,7 +22,7 @@ data "archive_file" "lambda" {
 }
 
 resource "aws_lambda_function" "ingester_lambda" {
-    filename = "${var.lambda_name}_payload.zip"
+    filename = "${path.module}/../${var.lambda_name}_payload.zip"
     function_name = "${var.lambda_name}"
     role = aws_iam_role.ingester_role.arn
     runtime = "python3.11"
