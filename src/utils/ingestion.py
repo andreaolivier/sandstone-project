@@ -73,7 +73,7 @@ def get_table_data(conn, table_name, last_id=0):
     return table
 
 
-def get_all_table_data(conn, last_ids):
+def get_all_table_data(conn, last_ids={}):
     """Returns the all the table data from get_data() in a dictionary and
     creates a key of all the last_ids.
         Parameters:
