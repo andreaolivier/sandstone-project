@@ -101,13 +101,11 @@ def ingestion_handler():
         data = get_all_table_data(conn, last_ids)
 
         if check_for_new_values(data):
-            print('saving')
             json_str = json.dumps(data, default=str)
 
             date = dt.today().strftime('%y-%m-%d')
             hour = dt.today().strftime('%H-%M')
-
-            print(hour, date)
+            
             s3.put_object(
                 Bucket=bucket_name,
                 Key=f"{date}/{hour}.json",
