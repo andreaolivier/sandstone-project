@@ -1,35 +1,104 @@
-from pprint import pprint
-import boto3
+"""This module contains the ingestion functions used to collect all the data
+from the PSQL database.
+"""
+
+from pg8000.native import identifier, literal
+
 
 def get_column_names(conn, table_name):
-    data = conn.run("SELECT column_name FROM information_schema.columns where table_name = '%s';" % table_name)
+    """Returns the names of all the columns in the passed table from the
+    connected PSQL database.
+        Parameters:
+            conn (pg8000.native.connection): A database connection.
+            table_name (str): PSQL table name.
+        Returns:
+            column_names (list): All column names from table_name.
+    """
+    data = conn.run(f"""
+                    SELECT column_name
+                    FROM information_schema.columns
+                    where table_name = {literal(table_name)};
+                    """)
+
     return [column_name[0] for column_name in data]
 
+
 def get_table_names(conn):
-    data = conn.run("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_type = 'BASE TABLE'")
-    return [table_name[0] for table_name in data if table_name[0] != '_prisma_migrations']
+    """Returns the names of all the tables from the connected PSQL database.
+        Parameters:
+            conn (pg8000.native.connection): A database connection.
+        Returns:
+            column_names (list): All column names the connected database except
+            '_prisma_migrations' table.
+    """
+    data = conn.run("""
+                    SELECT table_name
+                    FROM information_schema.tables
+                    WHERE table_schema = 'public'
+                        and table_type = 'BASE TABLE'
+                    """)
 
-def get_data(conn, table_name, query_param=''):
-    column_names = get_column_names(conn, table_name)
-    query = 'SELECT * from %s '
-    query += query_param
-    query += ';'
-    data = conn.run(query % table_name)
+    return [table_name[0] for table_name in data
+            if table_name[0] != '_prisma_migrations']
 
+
+def get_table_data(conn, table_name, last_id=0):
+    """Returns the all the rows whos primary key id is higher than the last_id
+    from the passed PSQL table.
+        Parameters:
+            conn (pg8000.native.connection): A database connection.
+            table_name (str): PSQL table name.
+            last_id (int): The last primary key id number from the
+            previous ingestion, if no previous ingestion, defaults to 0.
+        Returns:
+            tables (dict): Returns all the data in the table_name from the
+            connected PSQL database.
+    """
+    columns = get_column_names(conn, table_name)
+
+    data = conn.run(f"""
+                    SELECT * from {identifier(table_name)}
+                    where {identifier(columns[0])} > {literal(last_id)}
+                    order by {identifier(columns[0])} asc;
+                    """)
     table = {}
+
+    for column in columns:
+        table[column] = []
 
     for row in data:
         for index, element in enumerate(row):
-            if column_names[index] not in table:
-                table[column_names[index]] = []
-
-            table[column_names[index]].append(element)
+            table[columns[index]].append(element)
 
     return table
 
 
-def upload_file_to_s3_bucket_first_time():
-    client = boto3.client('s3')
-    client.upload_file('alltables.json', 'nc-de-pb', 'alltables.json')
+def get_all_table_data(conn, last_ids):
+    """Returns the all the table data from get_data() in a dictionary and
+    creates a key of all the last_ids.
+        Parameters:
+            conn (pg8000.native.connection): A database connection.
+            last_ids (dict): A dictionary containing all the last primary key
+            id numbers from the previous ingestion, if no previous ingestion,
+            all values default to 0.
+        Returns:
+            big_dict (dict): Returns all the data for all the tables.
+    """
+    big_dict = {}
+    big_dict['last_ids'] = {}
+    table_names = get_table_names(conn)
 
-'''one function: if s3 bucket empty, take snapshop of all tables. if s3 bucket is not empty, look at the most recent file and look at last sales_order_id and get everything after'''
+    for table in table_names:
+        primary_key = get_column_names(conn, table)[0]
+
+        if table not in last_ids:
+            last_ids[table] = 0
+
+        big_dict[table] = get_table_data(conn, table, last_ids[table])
+
+        if big_dict[table][primary_key] != []:
+            big_dict['last_ids'][table] = big_dict[table][primary_key][-1]
+        else:
+            big_dict['last_ids'][table] = last_ids[table]
+
+    return big_dict
