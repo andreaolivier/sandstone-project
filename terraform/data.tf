@@ -7,3 +7,11 @@ data "archive_file" "lambda" {
     source_file = "${path.module}/../src/ingester.py"
     output_path = "${path.module}/../${var.lambda_name}.zip"
 }
+
+data "aws_iam_policy_document" "scheduler_document" {
+  statement {
+    actions = ["lambda:InvokeFunction"]
+
+    resources = ["${aws_lambda_function.ingester_lambda.arn}"]
+  }
+}
