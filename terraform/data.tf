@@ -27,3 +27,11 @@ data "aws_iam_policy_document" "cw_document" {
     ]
   }
 }
+
+data "aws_iam_policy_document" "scheduler_document" {
+  statement {
+    actions = ["lambda:InvokeFunction"]
+
+    resources = ["${aws_lambda_function.ingester_lambda.arn}"]
+  }
+}
