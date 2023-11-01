@@ -6,12 +6,12 @@ from pprint import pprint
 
 
 def get_connection():
-    return Connection(
-        user='project_user_7',
-        database='totesys',
-        port='5432',
-        host='nc-data-eng-totesys-production.chpsczt8h1nu.eu-west-2.rds.amazonaws.com',
-        password='WRb2miiYPXX19TXr'
+   return Connection(
+        user=os.environ['DB_USER'],
+        database=os.environ['DB_NAME'],
+        port=os.environ['DB_PORT'],
+        host=os.environ['DB_HOST'],
+        password=os.environ['DB_PASSWORD']
     )
 
 conn = get_connection()
