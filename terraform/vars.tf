@@ -6,5 +6,5 @@ variable "python_file_name" {
 
 variable "lambda_name" {
     type = string
-    default = "ingestion_lambda"
+    default = "ingestion_handler"
 }
