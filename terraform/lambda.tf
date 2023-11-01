@@ -6,7 +6,7 @@ resource "aws_lambda_function" "ingester_lambda" {
     handler = "${var.python_file_name}.ingestion_handler"
 }
 
-# resource "aws_lambda_permission" "allow_s3" {
+# resource "aws_lambda_permission" "allow_s3" { EVENTBRIDGE MAYBE??? 
 #   action         = "lambda:InvokeFunction"
 #   function_name  = aws_lambda_function.ingester_lambda.function_name
 #   principal      = "s3.amazonaws.com"
