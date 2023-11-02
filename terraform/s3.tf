@@ -1,11 +1,11 @@
 resource "aws_s3_bucket" "ingested_data_bucket" {
-  bucket = "sandstone-ingested-data"
+  bucket = "sandstone-ingested-data-testtest"
 }
 
 resource "aws_s3_bucket" "dependencies_bucket" {
-  bucket = "sandstone-dependencies"
+  bucket = "sandstone-dependencies-testtest"
 }
 
 resource "aws_s3_bucket" "processed_data_bucket" {
-  bucket = "sandstone-processed-data"
+  bucket = "sandstone-processed-data-testtest"
 }

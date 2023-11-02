@@ -6,11 +6,11 @@ resource "aws_lambda_function" "ingester_lambda" {
     handler = "${var.python_file_name}.ingestion_handler"
     environment {
       variables = {
-        DB_USER = "${ secrets.DB_USER }",
-        DB_NAME = "${ secrets.DB_NAME }",
-        DB_PORT = "${ secrets.DB_PORT }",
-        DB_HOST = "${ secrets.DB_HOST }",
-        DB_PASSWORD = "${ secrets.DB_PASSWORD }"
+        DB_USER = "project_user_7",
+        DB_NAME = "totesys",
+        DB_PORT = "5432",
+        DB_HOST = "nc-data-eng-totesys-production.chpsczt8h1nu.eu-west-2.rds.amazonaws.com",
+        DB_PASSWORD = "WRb2miiYPXX19TXr"
       }
     }
 }

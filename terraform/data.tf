@@ -8,6 +8,12 @@ data "archive_file" "lambda" {
     output_path = "${path.module}/../${var.lambda_name}.zip"
 }
 
+data "archive_file" "util-ingestion" {
+    type = "zip"
+    source_dir = "${path.module}/../src/python"
+    output_path = "${path.module}/../python.zip"
+}
+
 data "aws_iam_policy_document" "scheduler_document" {
   statement {
     actions = ["lambda:InvokeFunction"]
