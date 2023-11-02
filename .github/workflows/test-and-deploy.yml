@@ -1,0 +1,93 @@
+name: 'Test and Deploy'
+on:
+  push:
+    branches:
+      -main
+
+jobs:
+    run-checks:
+        runs-on: ubuntu-latest
+        environment: DB
+        env: 
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.10'
+
+            - name: install requirements
+              run: make requirements
+
+            - name: run Security checks
+              run: make security-test
+
+            - name: run autopep8
+              run: make run-autopep
+
+            - name: run Flake checks
+              run: make run-flake
+
+            - name: run Coverage Checks
+              run: make check-coverage
+
+    run-unit-tests:
+        runs-on: ubuntu-latest
+        environment: DB
+        env: 
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        needs: run-checks
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.10'
+
+            - name: install requirements
+              run: make requirements
+
+            - name: unit tests
+              run: make unit-test
+            
+    # deploy:
+    #     runs-on: ubuntu-latest
+    #     needs: run-unit-tests
+    #     steps: 
+    #         - name: Checkout Repo
+    #           uses: actions/checkout@v4
+
+    #         - name: Configure AWS CLI
+    #           uses: aws-actions/configure-aws-credentials@v4
+    #           with:
+    #             aws-access-key-id: ${{ secrets.access_key }}
+    #             aws-secret-access-key: ${{ secrets.secret_key }}
+    #             aws-region: eu-west-2
+           
+    #         - name: Set Up Terraform
+    #           uses: hashicorp/setup-terraform@v2
+
+    #         - name: Terraform Init
+    #           working-directory: terraform
+    #           run: terraform init
+
+    #         - name: Terraform plan
+    #           working-directory: terraform
+    #           run: terraform plan
+
+    #         - name: Terraform Apply
+    #           working-directory: terraform
+    #           run: terraform apply -auto-approve

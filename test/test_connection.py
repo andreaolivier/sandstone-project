@@ -1,7 +1,8 @@
-from src.connection import get_connection
+import src.connection as connection
+
 
 def test_get_connection_connects_to_base():
-    conn = get_connection()
+    conn = connection.get_connection()
     def test_connection(conn):
         query = ('SELECT * FROM currency')
 
