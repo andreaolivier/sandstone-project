@@ -4,7 +4,7 @@ import pytest
 from moto import mock_s3
 import boto3
 import botocore
-from src.ingester import get_object_list
+from src.utils.ingestion import get_object_list
 
 
 @pytest.fixture
