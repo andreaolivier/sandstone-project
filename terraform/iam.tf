@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "s3_document" {
     actions = ["s3:PutObject"]
 
     resources = [
-      "${aws_s3_bucket.data_bucket.arn}/*"
+      "${aws_s3_bucket.ingested_data_bucket.arn}/*"
     ]
   }
 }
@@ -79,6 +79,8 @@ resource "aws_iam_role_policy_attachment" "lambda_s3_policy_attachment" {
   policy_arn = aws_iam_policy.s3_policy.arn
 }
 
+# Creates role for scheduler
+
 resource "aws_iam_role" "scheduler_role" {
     name = "scheduler_role"
     assume_role_policy = jsonencode({
@@ -95,10 +97,14 @@ resource "aws_iam_role" "scheduler_role" {
   })
 }
 
+# Creates Scheduler policy
+
 resource "aws_iam_policy" "scheduler_policy" {
   name_prefix = "scheduler-policy-${var.ingester_scheduler_name}"
   policy = data.aws_iam_policy_document.scheduler_document.json 
 }
+
+# Attaches Scheduler policy to Scheduler role
 
 resource "aws_iam_role_policy_attachment" "scheduler_scheduler_policy_attachment" {
   role = aws_iam_role.scheduler_role.name
