@@ -38,7 +38,7 @@ def ingestion_handler():
         s3 = boto3.client('s3')
         conn = get_connection()
 
-        bucket_name = 'tester-bucket-sandstone'
+        bucket_name = 'sandstone-ingested-data'
 
         last_ids = get_last_ids(s3, bucket_name)
 
