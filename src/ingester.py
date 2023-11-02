@@ -2,6 +2,7 @@ from datetime import datetime as dt
 import json
 import os
 import logging
+from pg8000 import InterfaceError, DatabaseError, Error
 from pg8000.native import Connection
 from dotenv import load_dotenv
 import boto3
@@ -9,6 +10,7 @@ from src.utils.ingestion import get_all_table_data, get_last_ids, check_for_new_
 
 logger = logging.getLogger('MyLogger')
 logger.setLevel(logging.INFO)
+
 
 def get_connection():
     """Establishes a connection to a database and returns the connection
@@ -47,19 +49,18 @@ def ingestion_handler():
 
             date = dt.today().strftime('%y-%m-%d')
             hour = dt.today().strftime('%H-%M')
-            
+
             s3.put_object(
                 Bucket=bucket_name,
                 Key=f"{date}/{hour}.json",
                 Body=json_str,
             )
-    # except InterfaceError as pg_err:
-    #     print(pg_err)
-    #     logger.info(f'Critical pg8000 error: {pg_err}')
-    # except s3.exceptions.NoSuchKey as NoKeyError:
-    #     print(NoKeyError)
+    except (InterfaceError, DatabaseError, Error) as pg_err:
+        logger.error("Critical pg8000 error: %s", pg_err)
+    except s3.exceptions.NoSuchKey as no_key_error:
+        logger.error(no_key_error)
     except Exception as e:
-        print(e, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,")
+        logger.error(e)
 
 
 load_dotenv()
