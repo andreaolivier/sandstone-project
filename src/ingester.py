@@ -1,11 +1,14 @@
 from datetime import datetime as dt
 import json
 import os
+import logging
 from pg8000.native import Connection
 from dotenv import load_dotenv
 import boto3
-from src.utils.ingestion import get_all_table_data
+from src.utils.ingestion import get_all_table_data, get_last_ids, check_for_new_values
 
+logger = logging.getLogger('MyLogger')
+logger.setLevel(logging.INFO)
 
 def get_connection():
     """Establishes a connection to a database and returns the connection
@@ -20,67 +23,6 @@ def get_connection():
         host=os.environ['DB_HOST'],
         password=os.environ['DB_PASSWORD']
     )
-
-
-def get_object_list(s3, bucket_name):
-    """Returns all the objects in a bucket from the passed bucket_name.
-        Parameters:
-            s3 (botocore.client.S3): An S3 client.
-            bucket_name (str): The name of the S3 bucket.
-        Returns:
-            bucket_object_list (list): A list of bucket objects.
-    """
-    response = s3.list_objects_v2(Bucket=bucket_name)
-
-    if 'Contents' in response:
-        file_names = [bucket_obj['Key']
-                      for bucket_obj in response['Contents']]
-
-        return file_names
-    return []
-
-
-def get_last_ids(s3, bucket_name):
-    """Returns the last_ids dictionary from an existing S3 Object
-        Parameters:
-            s3 (botocore.client.S3): An S3 client.
-            bucket_name (str): The name of the S3 bucket.
-        Returns:
-            last_ids (dict): The primary key id number for each table from the
-            previous ingestion.
-    """
-    bucket_objects = get_object_list(s3, bucket_name)
-
-    if len(bucket_objects) == 0:
-        return {}
-
-    latest_file = sorted(bucket_objects)[-1]
-
-    s3_response = s3.get_object(
-        Bucket=bucket_name,
-        Key=latest_file
-    )
-
-    file_content = s3_response.get('Body').read()
-    json_content = json.loads(file_content)
-
-    return json_content['last_ids']
-
-
-def check_for_new_values(data):
-    """Returns a boolean if the table data passed contains any new values in
-    the table data meaning there is data to upload.
-            data (dict): The big table data dictionary.
-        Returns:
-            new_values (bool): If there are values in the dictionary.
-    """
-    for index, data_values in enumerate(list(data.values())):
-        if index == 0:
-            continue
-        for value in data_values.values():
-            if value != []:
-                return True
-    return False
 
 
 def ingestion_handler():
@@ -111,10 +53,13 @@ def ingestion_handler():
                 Key=f"{date}/{hour}.json",
                 Body=json_str,
             )
-    except s3.exceptions.NoSuchKey as NoKeyError:
-        print(NoKeyError)
+    # except InterfaceError as pg_err:
+    #     print(pg_err)
+    #     logger.info(f'Critical pg8000 error: {pg_err}')
+    # except s3.exceptions.NoSuchKey as NoKeyError:
+    #     print(NoKeyError)
     except Exception as e:
-        print(e)
+        print(e, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,")
 
 
 load_dotenv()
