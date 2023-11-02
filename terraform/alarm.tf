@@ -4,14 +4,14 @@ resource "aws_cloudwatch_log_metric_filter" "ingester_error_filtering" {
 #The task says that this should be saved for major errors, so this should probably be rewritten when we add logging and error reporting to the ingester.
 	name = "IngesterErrorFiltering"
 	pattern = "Error"
-	log_group_name = "log-group:/aws/lambda/${var.lambda_name}"
+	log_group_name = "/aws/lambda/${var.lambda_name}"
 	
 	metric_transformation {
 		name = "ErrorCount"
 		namespace = "IngesterLogging"
 		value = "1"
 		}
-    # depends_on = [ aws_cloudwatch_log_group.yada ]
+    depends_on = [ aws_lambda_function.ingester_lambda ]
 	}
 
 resource "aws_cloudwatch_metric_alarm" "ingester_alarm" {
