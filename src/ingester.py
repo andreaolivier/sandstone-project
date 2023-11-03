@@ -28,7 +28,7 @@ def get_connection():
     )
 
 
-def ingestion_handler():
+def ingestion_handler(event, context):
     """Handles the ingestion process. Checks for existing S3 Object if there
     isn't one downloads everything from the database and saves it in a file
     in the format of 'year-month-day/hour-minute.json'. If there is an existing
@@ -40,7 +40,7 @@ def ingestion_handler():
         s3 = boto3.client('s3')
         conn = get_connection()
 
-        bucket_name = 'sandstone-ingested-data-testtest'
+        bucket_name = 'sandstone-ingested-data'
 
         last_ids = get_last_ids(s3, bucket_name)
 

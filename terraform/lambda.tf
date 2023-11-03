@@ -4,6 +4,8 @@ resource "aws_lambda_function" "ingester_lambda" {
     role = aws_iam_role.ingester_role.arn
     runtime = "python3.11"
     handler = "${var.python_file_name}.ingestion_handler"
+    layers = [aws_lambda_layer_version.lambda_layer.arn]
+    timeout = 60
     environment {
       variables = {
         DB_USER = "project_user_7",

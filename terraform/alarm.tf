@@ -1,3 +1,16 @@
+resource "aws_cloudwatch_metric_alarm" "ingester_alarm" {
+#This triggers an alarm when the ingester function reports an error.
+    alarm_name = "CloudwatchAlarm"
+    namespace = "IngesterLogging"
+    metric_name = "ErrorCount"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods = 1
+    threshold = 1
+    statistic = "SampleCount"
+    period = 300
+    alarm_actions = ["arn:aws:sns:eu-west-2:${data.aws_caller_identity.current.account_id}:ingester-logging-sns-topic"]
+}
+
 resource "aws_cloudwatch_log_metric_filter" "ingester_error_filtering" {
 #This adds a filter for errors in the logs sent to the log group.
 #The log group should be automatically created by the lambda function, so this will need to be amended once that's done.
@@ -14,18 +27,7 @@ resource "aws_cloudwatch_log_metric_filter" "ingester_error_filtering" {
     depends_on = [ aws_lambda_function.ingester_lambda ]
 	}
 
-resource "aws_cloudwatch_metric_alarm" "ingester_alarm" {
-#This triggers an alarm when the ingester function reports an error.
-    alarm_name = "CloudwatchAlarm"
-    namespace = "IngesterLogging"
-    metric_name = "ErrorCount"
-    comparison_operator = "GreaterThanOrEqualToThreshold"
-    evaluation_periods = 1
-    threshold = 1
-    statistic = "SampleCount"
-    period = 300
-    alarm_actions = ["arn:aws:sns:eu-west-2:${data.aws_caller_identity.current.account_id}:ingester-logging-sns-topic"]
-}
+
 
 resource "aws_cloudwatch_metric_alarm" "ingester_duration_alarm" {
 #I thought it might be a good idea to add a duration error similar to the one from the sprint.
@@ -35,9 +37,9 @@ resource "aws_cloudwatch_metric_alarm" "ingester_duration_alarm" {
     comparison_operator = "GreaterThanOrEqualToThreshold"
     evaluation_periods = 1
     namespace = "AWS/Lambda"
-    threshold = 600
+    threshold = 60000
     metric_name = "Duration"
     statistic = "Maximum"
-    period = 60
+    period = 120
     alarm_actions = ["arn:aws:sns:eu-west-2:${data.aws_caller_identity.current.account_id}:ingester-logging-sns-topic"]
 }
