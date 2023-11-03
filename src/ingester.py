@@ -6,7 +6,7 @@ from pg8000 import InterfaceError, DatabaseError, Error
 from pg8000.native import Connection
 from dotenv import load_dotenv
 import boto3
-from ingestion import get_all_table_data, get_last_ids, check_for_new_values
+from src.ingestion import get_all_table_data, get_last_ids, check_for_new_values
 
 
 logger = logging.getLogger('MyLogger')
