@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from pg8000.native import Connection
-from src.utils.ingestion import get_all_table_data
+from src.ingestion import get_all_table_data
 
 load_dotenv()
 

@@ -69,7 +69,7 @@ def test_ingestion_handler_creates_object_if_bucket_empty_with_data():
 
     client = botocore.session.get_session().create_client('s3')
     client.create_bucket(
-        Bucket='tester-bucket-sandstone',
+        Bucket='sandstone-ingested-data',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
 
@@ -82,13 +82,14 @@ def test_ingestion_handler_creates_object_if_bucket_empty_with_data():
             ingestion_handler()
 
     s3_response = client.get_object(
-        Bucket='tester-bucket-sandstone',
+        Bucket='sandstone-ingested-data',
         Key='23-11-01/12-29.json'
     )
 
     file_content = s3_response.get('Body').read()
     json_content = json.loads(file_content)
-
+    print(data)
+    print(json_content)
     assert data == json_content
 
 
@@ -135,7 +136,7 @@ def test_creates_s3_object_if_bucket_is_empty_with_database_data():
 
     client = botocore.session.get_session().create_client('s3')
     client.create_bucket(
-        Bucket='tester-bucket-sandstone',
+        Bucket='sandstone-ingested-data',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
 
@@ -148,7 +149,7 @@ def test_creates_s3_object_if_bucket_is_empty_with_database_data():
             ingestion_handler()
     try:
         client.get_object(
-            Bucket='tester-bucket-sandstone',
+            Bucket='sandstone-ingested-data',
             Key='23-11-01/12-29.json'
         )
         assert False
@@ -234,7 +235,7 @@ def test_creates_s3_object_if_bucket_has_objects_with_database_data_with_obj():
 
     client = botocore.session.get_session().create_client('s3')
     client.create_bucket(
-        Bucket='tester-bucket-sandstone',
+        Bucket='sandstone-ingested-data',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
 
@@ -252,14 +253,14 @@ def test_creates_s3_object_if_bucket_has_objects_with_database_data_with_obj():
 
             ingestion_handler()
 
-    response = client.list_objects_v2(Bucket='tester-bucket-sandstone')
+    response = client.list_objects_v2(Bucket='sandstone-ingested-data')
     file_names = [bucket_obj['Key']
                   for bucket_obj in response['Contents']]
 
     assert file_names == ['23-11-01/12-29.json', '23-11-01/12-35.json']
 
     s3_response = client.get_object(
-        Bucket='tester-bucket-sandstone',
+        Bucket='sandstone-ingested-data',
         Key='23-11-01/12-35.json'
     )
 

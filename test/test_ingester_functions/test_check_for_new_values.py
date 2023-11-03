@@ -1,5 +1,5 @@
 """Tests for check_for_new_values function"""
-from src.ingester import check_for_new_values
+from src.ingestion import check_for_new_values
 
 
 def test_check_for_new_values_returns_false_no_new_values():
