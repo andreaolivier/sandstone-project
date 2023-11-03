@@ -72,7 +72,7 @@ run-autopep:
 
 ## Run the flake8 code check
 run-flake:
-	$(call execute_in_env, flake8  ./src/*.py ./test/*.py)
+	$(call execute_in_env, flake8  ./src/*.py ./test/test_ingester_functions/*.py)
 
 ## Run the unit tests
 unit-test:
