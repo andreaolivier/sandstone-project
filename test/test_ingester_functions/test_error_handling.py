@@ -2,7 +2,7 @@
 import unittest
 from unittest import mock
 import os
-from src.ingester import ingestion_handler
+from ingester import ingestion_handler
 
 
 @mock.patch.dict(os.environ, {"DB_USER": 'test', "DB_NAME": 'test',
