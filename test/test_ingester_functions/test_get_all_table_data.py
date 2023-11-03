@@ -12,6 +12,5 @@ def test_returns_a_dictionary_of_dictionaries():
     #     host=os.environ['DB_HOST'],
     #     password=os.environ['DB_PASSWORD']
     # )
-    
+
     # assert type(get_all_table_data(conn)) == dict
-    

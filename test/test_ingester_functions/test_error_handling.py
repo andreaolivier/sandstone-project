@@ -19,5 +19,7 @@ class myTestCase(unittest.TestCase):
         ingestion_handler()
         with self.assertLogs('MyLogger', level='ERROR') as cm:
             ingestion_handler()
-        self.assertEqual(cm.output, ["ERROR:MyLogger:Critical pg8000 error: Can't create a connection to host test and port 123 (timeout is None and source_address is None)."])
+        self.assertEqual(cm.output, ["ERROR:MyLogger:Critical pg8000 error:", 
+        " Can't create a connection to host test and port 123 (timeout is ",
+        "None and source_address is None)."])
 
