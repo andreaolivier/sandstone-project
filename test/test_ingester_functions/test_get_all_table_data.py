@@ -1,4 +1,4 @@
-from src.utils.ingestion import get_all_table_data
+from src.ingestion import get_all_table_data
 from pg8000.native import Connection
 import os
 

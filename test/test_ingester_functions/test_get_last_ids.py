@@ -5,7 +5,7 @@ import pytest
 from moto import mock_s3
 import boto3
 import botocore
-from src.utils.ingestion import get_last_ids
+from src.ingestion import get_last_ids
 
 
 @pytest.fixture
