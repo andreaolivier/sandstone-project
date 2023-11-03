@@ -42,7 +42,7 @@ def get_table_names(conn):
 
 
 def get_table_data(conn, table_name, last_id=0):
-    """Returns the all the rows whos primary key id is higher than the last_id
+    """Returns all the rows whose primary key id is higher than the last_id
     from the passed PSQL table.
         Parameters:
             conn (pg8000.native.connection): A database connection.
