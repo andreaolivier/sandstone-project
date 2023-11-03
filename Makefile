@@ -42,7 +42,7 @@ requirements: create-environment
 # # Set Up
 # ## Install bandit
 bandit:
- 	$(call execute_in_env, $(PIP) install bandit)
+	$(call execute_in_env, $(PIP) install bandit)
 
 ## Install safety
 safety:
@@ -54,10 +54,10 @@ flake:
 
 ## Install coverage
 coverage:
- 	$(call execute_in_env, $(PIP) install coverage)
+	$(call execute_in_env, $(PIP) install coverage)
 
 ## Set up dev requirements (bandit, safety, flake8, coverage)
- dev-setup: bandit safety flake coverage
+dev-setup: bandit safety flake coverage
 
 # Build / Run
 
@@ -72,7 +72,7 @@ run-autopep:
 
 ## Run the flake8 code check
 run-flake:
-	$(call execute_in_env, flake8  ./src/*.py ./test/*.py)
+	$(call execute_in_env, flake8  ./src/*.py ./test/test_ingester_functions/*.py)
 
 ## Run the unit tests
 unit-test:

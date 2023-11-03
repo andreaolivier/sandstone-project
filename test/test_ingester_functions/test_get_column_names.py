@@ -1,5 +1,5 @@
 """Tests for check_for_new_values function"""
-from src.utils.ingestion import get_column_names
+from src.ingestion import get_column_names
 from pg8000.native import Connection
 import os
 from dotenv import load_dotenv
