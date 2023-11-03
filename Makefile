@@ -42,7 +42,7 @@ requirements: create-environment
 # # Set Up
 # ## Install bandit
 bandit:
- 	$(call execute_in_env, $(PIP) install bandit)
+	$(call execute_in_env, $(PIP) install bandit)
 
 ## Install safety
 safety:
