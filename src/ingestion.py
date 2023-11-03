@@ -1,8 +1,9 @@
 """This module contains the ingestion functions used to collect all the data
 from the PSQL database.
 """
-from pg8000.native import identifier, literal
 import json
+from pg8000.native import identifier, literal
+
 
 def get_column_names(conn, table_name):
     """Returns the names of all the columns in the passed table from the

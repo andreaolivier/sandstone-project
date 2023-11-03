@@ -1,11 +1,8 @@
 """Tests for ingestion_handler error handling"""
-from src.ingester import ingestion_handler
 import unittest
-import logging
-from pg8000.native import Connection
 from unittest import mock
 import os
-import logging
+from src.ingester import ingestion_handler
 
 
 @mock.patch.dict(os.environ, {"DB_USER": 'test', "DB_NAME": 'test',
@@ -16,10 +13,11 @@ class myTestCase(unittest.TestCase):
         """Test that ingestion_handler() logs pg8000 errors for connection and
         database errors
         """
-        ingestion_handler()
+        ingestion_handler("", "")
         with self.assertLogs('MyLogger', level='ERROR') as cm:
-            ingestion_handler()
-        self.assertEqual(cm.output, ["ERROR:MyLogger:Critical pg8000 error:", 
-        " Can't create a connection to host test and port 123 (timeout is ",
-        "None and source_address is None)."])
-
+            ingestion_handler("", "")
+        self.assertEqual(cm.output,
+                         "ERROR:MyLogger:Critical pg8000 error: "
+                         "Can't create a connection to host test "
+                         "and port 123 (timeout is None and "
+                         "source_address is None).")
