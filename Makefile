@@ -41,23 +41,23 @@ requirements: create-environment
 ################################################################################################################
 # # Set Up
 # ## Install bandit
-bandit:
-	$(call execute_in_env, $(PIP) install bandit)
+# bandit:
+# 	$(call execute_in_env, $(PIP) install bandit)
 
-## Install safety
-safety:
-	$(call execute_in_env, $(PIP) install safety)
+# ## Install safety
+# safety:
+# 	$(call execute_in_env, $(PIP) install safety)
 
-## Install flake8
-flake:
-	$(call execute_in_env, $(PIP) install flake8)
+# ## Install flake8
+# flake:
+# 	$(call execute_in_env, $(PIP) install flake8)
 
-## Install coverage
-coverage:
-	$(call execute_in_env, $(PIP) install coverage)
+# ## Install coverage
+# coverage:
+# 	$(call execute_in_env, $(PIP) install coverage)
 
 ## Set up dev requirements (bandit, safety, flake8, coverage)
-dev-setup: bandit safety flake coverage
+# dev-setup: bandit safety flake coverage
 
 # Build / Run
 

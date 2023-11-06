@@ -42,14 +42,14 @@ def get_table_names(conn):
             if table_name[0] != '_prisma_migrations']
 
 
-def get_table_data(conn, table_name, last_id=0):
-    """Returns all the rows whose primary key id is higher than the last_id
-    from the passed PSQL table.
+def get_table_data(conn, table_name, last_time='2000-01-01 00:00:00'):
+    """Returns all the rows whose last updated time is higher than the
+    last_time from the passed PSQL table.
         Parameters:
             conn (pg8000.native.connection): A database connection.
             table_name (str): PSQL table name.
-            last_id (int): The last primary key id number from the
-            previous ingestion, if no previous ingestion, defaults to 0.
+            last_time (str): The last updated time from the previous ingestion,
+            if no previous ingestion, defaults to '2000-01-01 00:00:00'.
         Returns:
             tables (dict): Returns all the data in the table_name from the
             connected PSQL database.
@@ -58,8 +58,8 @@ def get_table_data(conn, table_name, last_id=0):
 
     data = conn.run(f"""
                     SELECT * from {identifier(table_name)}
-                    where {identifier(columns[0])} > {literal(last_id)}
-                    order by {identifier(columns[0])} asc;
+                    where last_updated > {literal(last_time)}
+                    order by last_updated asc;
                     """)
     table = {}
 
@@ -73,7 +73,7 @@ def get_table_data(conn, table_name, last_id=0):
     return table
 
 
-def get_all_table_data(conn, last_ids={}):
+def get_all_table_data(conn, last_times={}):
     """Returns the all the table data from get_data() in a dictionary and
     creates a key of all the last_ids.
         Parameters:
@@ -85,21 +85,20 @@ def get_all_table_data(conn, last_ids={}):
             big_dict (dict): Returns all the data for all the tables.
     """
     big_dict = {}
-    big_dict['last_ids'] = {}
+    big_dict['last_times'] = {}
     table_names = get_table_names(conn)
 
     for table in table_names:
-        primary_key = get_column_names(conn, table)[0]
 
-        if table not in last_ids:
-            last_ids[table] = 0
+        if table not in last_times:
+            last_times[table] = '2000-01-01 00:00:00'
 
-        big_dict[table] = get_table_data(conn, table, last_ids[table])
+        big_dict[table] = get_table_data(conn, table, last_times[table])
 
-        if big_dict[table][primary_key] != []:
-            big_dict['last_ids'][table] = big_dict[table][primary_key][-1]
+        if big_dict[table]['last_updated'] != []:
+            big_dict['last_times'][table] = big_dict[table]['last_updated'][-1]
         else:
-            big_dict['last_ids'][table] = last_ids[table]
+            big_dict['last_times'][table] = last_times[table]
 
     return big_dict
 
@@ -138,7 +137,7 @@ def get_object_list(s3, bucket_name):
     return []
 
 
-def get_last_ids(s3, bucket_name):
+def get_last_times(s3, bucket_name):
     """Returns the last_ids dictionary from an existing S3 Object
         Parameters:
             s3 (botocore.client.S3): An S3 client.
@@ -162,4 +161,4 @@ def get_last_ids(s3, bucket_name):
     file_content = s3_response.get('Body').read()
     json_content = json.loads(file_content)
 
-    return json_content['last_ids']
+    return json_content['last_times']

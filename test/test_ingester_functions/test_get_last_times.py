@@ -1,11 +1,11 @@
-"""Tests for get_last_ids function"""
+"""Tests for get_last_times function"""
 import os
 import json
 import pytest
 from moto import mock_s3
 import boto3
 import botocore
-from ingestion import get_last_ids
+from ingestion import get_last_times
 
 
 @pytest.fixture
@@ -25,8 +25,8 @@ def s3(aws_credentials):
 
 
 @mock_s3
-def test_get_last_ids_returns_empty_dictionary_no_object():
-    """Tests that get_last_ids() returns an empty dictionary if there is no
+def test_get_last_times_returns_empty_dictionary_no_object():
+    """Tests that get_last_times() returns an empty dictionary if there is no
     objects in the S3 bucket.
     """
     client = botocore.session.get_session().create_client('s3')
@@ -35,13 +35,13 @@ def test_get_last_ids_returns_empty_dictionary_no_object():
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
 
-    result = get_last_ids(client, 'tester')
+    result = get_last_times(client, 'tester')
     assert result == {}
 
 
 @mock_s3
-def test_get_last_ids_returns_dictionary_containing_last_ids():
-    """Tests that get_last_ids() returns a dictionary with all the last_ids
+def test_get_last_times_returns_dictionary_containing_last_ids():
+    """Tests that get_last_times() returns a dictionary with all the last_ids
     from the latest S3 Object.
     """
     client = botocore.session.get_session().create_client('s3')
@@ -50,15 +50,15 @@ def test_get_last_ids_returns_dictionary_containing_last_ids():
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
 
-    val1 = {'last_ids': {'table1': 1,
-                         'table2': 1}, 'moew': 'meow'}
-    val2 = {'last_ids': {'table1': 2,
-                         'table2': 2}, 'moew': 'meow'}
+    val1 = {'last_times': {'table1': '2020-01-01 00:00:00',
+                           'table2': '2021-01-01 00:00:00'}, 'moew': 'meow'}
+    val2 = {'last_times': {'table1': '2023-01-01 00:00:00',
+                           'table2': '2024-01-01 00:00:00'}, 'moew': 'meow'}
 
     client.put_object(
         Body=json.dumps(val2),
         Bucket='tester',
-        Key='23-10-31/12-10.json',
+        Key='23-12-31/12-10.json',
     )
 
     client.put_object(
@@ -67,5 +67,6 @@ def test_get_last_ids_returns_dictionary_containing_last_ids():
         Key='23-11-01/12-10.json',
     )
 
-    result = get_last_ids(client, 'tester')
-    assert result == {'table1': 1, 'table2': 1}
+    result = get_last_times(client, 'tester')
+    assert result == {'table1': '2023-01-01 00:00:00',
+                      'table2': '2024-01-01 00:00:00'}
