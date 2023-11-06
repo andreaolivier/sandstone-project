@@ -64,6 +64,3 @@ def ingestion_handler(event="", context=""):
         logger.error(no_key_error)
     except Exception as e:
         logger.error(e)
-
-
-ingestion_handler()

@@ -43,8 +43,8 @@ def get_table_names(conn):
 
 
 def get_table_data(conn, table_name, last_time='2000-01-01 00:00:00'):
-    """Returns all the rows whose last updated time is higher than the last_time
-    from the passed PSQL table.
+    """Returns all the rows whose last updated time is higher than the
+    last_time from the passed PSQL table.
         Parameters:
             conn (pg8000.native.connection): A database connection.
             table_name (str): PSQL table name.
