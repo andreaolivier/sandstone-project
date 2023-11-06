@@ -6,22 +6,23 @@ terraform {
   }
 }
 
-data "aws_iam_policy_document" "s3_terraform_document" {
-  statement {
-    actions = ["s3:PutObject",
-              "s3:GetObject",
-              "s3:ListBucket"]
-    resources = [
-      "${aws_s3_bucket.terraform_state_bucket.arn}",
-      "${aws_s3_bucket.terraform_state_bucket.arn}/*"
-    ]
-  }
-}
+# data "aws_iam_policy_document" "s3_terraform_document" {
+#   statement {
+#     actions = ["s3:PutObject",
+#               "s3:GetObject",
+#               "s3:ListBucket",
+#               "s3:DeleteObject"]
+#     resources = [
+#       "${aws_s3_bucket.terraform_state_bucket.arn}",
+#       "${aws_s3_bucket.terraform_state_bucket.arn}/*"
+#     ]
+#   }
+# }
 
-resource "aws_iam_policy" "s3_terraform_policy" {
-  name = "s3-terraform-policy"
-  policy      = data.aws_iam_policy_document.s3_terraform_document.json
-}
+# resource "aws_iam_policy" "s3_terraform_policy" {
+#   name = "s3-terraform-policy"
+#   policy      = data.aws_iam_policy_document.s3_terraform_document.json
+# }
 
 
 # resource "aws_iam_role" "terraform_s3_role" {
@@ -41,7 +42,7 @@ resource "aws_iam_policy" "s3_terraform_policy" {
 #   })
 # }
 
-resource "aws_iam_role_policy_attachment" "terraform_s3_role_attachment" {
-  role       = aws_iam_role.terraform_s3_role.name
-  policy_arn = aws_iam_policy.s3_terraform_policy.arn
-}
+# resource "aws_iam_role_policy_attachment" "terraform_s3_role_attachment" {
+#   role       = aws_iam_role.terraform_s3_role.name
+#   policy_arn = aws_iam_policy.s3_terraform_policy.arn
+# }
