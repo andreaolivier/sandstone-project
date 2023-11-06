@@ -85,5 +85,5 @@ check-coverage:
 ## Run all checks
 run-checks: security-test run-flake unit-test check-coverage
 
-## Remove all files and buckets
-remove-aws-data: $(call execute_in_env, sh aws_script.sh)
+# ## Remove all files and buckets
+# remove-aws-data: $(call execute_in_env, sh aws_script.sh)
