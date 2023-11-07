@@ -5,7 +5,7 @@ data "aws_region" "current" {}
 data "archive_file" "lambda" {
     type = "zip"
     source_file = "${path.module}/../src/ingester.py"
-    output_path = "${path.module}/../${var.lambda_name}.zip"
+    output_path = "${path.module}/../python1.zip"
 }
 
 data "aws_iam_policy_document" "scheduler_document" {
