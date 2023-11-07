@@ -5,6 +5,12 @@ data "aws_region" "current" {}
 data "archive_file" "lambda" {
     type = "zip"
     source_file = "${path.module}/../src/ingester.py"
+    output_path = "${path.module}/../ingester.zip"
+}
+
+data "archive_file" "layer_zip" {
+    type = "zip"
+    source_dir = "${path.module}/../python"
     output_path = "${path.module}/../python.zip"
 }
 
