@@ -13,8 +13,8 @@ def test_generates_10_years_worth_of_dates():
 def test_contains_correct_columns():
     dates = dim_date()
     columns = list(dates.keys())
-    expected_columns = ['year', 'month', 'day', 'day_of_week', 'day_name', 
-                        'month_name', 'quarter']
+    expected_columns = ['date_id', 'year', 'month', 'day', 'day_of_week', 
+                        'day_name', 'month_name', 'quarter']
     assert columns == expected_columns
 
 def test_calculates_quarter_correctly():
