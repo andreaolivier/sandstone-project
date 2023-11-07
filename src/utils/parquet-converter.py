@@ -58,3 +58,8 @@ data = {
 dataframe = pd.DataFrame.from_dict(data)
 dataframe.to_parquet('test.parquet', index=False)
 print(pd.read_parquet('test.parquet'))
+
+def parquet_converter(dict):
+    dataframe = pd.DataFrame.from_dict(dict)
+    dataframe.to_parquet('test.parquet', index=False)
+    # print(pd.read_parquet('test.parquet'))
