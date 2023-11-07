@@ -1,5 +1,5 @@
 """Tests for fact_staff_util function"""
-from src.utils.fact_staff_util import fact_staff_util
+from src.utils.fact_staff import fact_staff_util
 
 
 def test_fact_staff_util_returns_a_empty_dict_when_passed_empty_dict():
@@ -30,7 +30,7 @@ def test_fact_staff_util_returns_correct_keys_when_theres_data_passed():
     passed.
     """
     data = {"sales_order": {
-        "sales_order_id": [],
+        "sales_order_id": [1],
         "created_at": [],
         "last_updated": [],
         "design_id": [],
@@ -45,13 +45,14 @@ def test_fact_staff_util_returns_correct_keys_when_theres_data_passed():
     }, "test": "test"}
 
     result = fact_staff_util(data)
-    print(list(result.keys()))
 
     expected_keys = ['created_time', 'created_date', 'last_updated_time',
                      'last_updated_date', 'sales_order_id', 'design_id',
                      'staff_id', 'counterparty_id', 'units_sold', 'unit_price',
                      'currency_id', 'agreed_delivery_date',
                      'agreed_payment_date', 'agreed_delivery_location_id']
+
+    print(list(result.keys()))
 
     assert list(result.keys()) == expected_keys
 
