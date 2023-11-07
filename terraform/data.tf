@@ -11,7 +11,7 @@ data "archive_file" "lambda" {
 data "archive_file" "layer_zip" {
     type = "zip"
     source_dir = "${path.module}/../python"
-    output_path = "${path.module}/../python1.zip"
+    output_path = "${path.module}/../python.zip"
 }
 
 data "aws_iam_policy_document" "scheduler_document" {
