@@ -1,16 +1,37 @@
-from src.utils.dim_location import to_dim_location
+from src.utils.dim_date import dim_date
 import json
 
 with open('./example_data/11-43.json') as f:
     test_data = json.load(f)
 
-def test_output_table_has_correct_column_keys():
-    formatted_data = to_dim_location(test_data)
-    expected_columns = ['address_line_1', 'address_line_2', 'district', 'city', 
-                        'postal_code', 'country', 'phone']
-    assert list(formatted_data.keys()) == expected_columns
-    
-def test_output_table_has_correct_number_of_values_in_columns():
-    formatted_data = to_dim_location(test_data)
-    expected_length = len(test_data['address']['address_id'])
-    assert len(formatted_data['phone']) == expected_length
+def test_generates_10_years_worth_of_dates():
+    dates = dim_date()
+    expected_years = [2020 + i for i in range(10)]
+    assert len(dates['year']) == 365*10
+    assert [*set(dates['year'])] == expected_years
+
+def test_contains_correct_columns():
+    dates = dim_date()
+    columns = list(dates.keys())
+    expected_columns = ['year', 'month', 'day', 'day_of_week', 'day_name', 
+                        'month_name', 'quarter']
+    assert columns == expected_columns
+
+def test_calculates_quarter_correctly():
+    dates = dim_date()
+    months_in_Q1 = set(
+        [dates['month'][i] for i in range(len(dates['month'])) 
+         if dates['quarter'][i] == 1])
+    months_in_Q2 = set(
+        [dates['month'][i] for i in range(len(dates['month'])) 
+         if dates['quarter'][i] == 2])
+    months_in_Q3 = set(
+        [dates['month'][i] for i in range(len(dates['month'])) 
+         if dates['quarter'][i] == 3])
+    months_in_Q4 = set(
+        [dates['month'][i] for i in range(len(dates['month'])) 
+         if dates['quarter'][i] == 4])
+    assert months_in_Q1 == set([1,2,3])
+    assert months_in_Q2 == set([4,5,6])
+    assert months_in_Q3 == set([7,8,9])
+    assert months_in_Q4 == set([10,11,12])
