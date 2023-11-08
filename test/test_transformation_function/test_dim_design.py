@@ -13,8 +13,8 @@ def sample_data_table():
                        "2022-11-03 14:20:49.962000"
                        ],
         "design_name": [
-                        "Wooden", "Wooden",
-                        "Granite", "Granite"],
+            "Wooden", "Wooden",
+            "Granite", "Granite"],
         "file_location": ["/usr/obj", "/usr", "/Network", "/usr/local/src"],
         "file_name": ["wooden-20211114-otpq.json",
                       "wooden-20220717-npgz.json",

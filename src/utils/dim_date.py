@@ -1,6 +1,7 @@
 import datetime as dt
 from math import ceil
 
+
 def dim_date():
     """
     Generates and formats dates from 01/01/20 to 01/01/29
@@ -19,5 +20,5 @@ def dim_date():
     dim_date['day_of_week'] = [int(i.strftime('%w')) for i in all_dates]
     dim_date['day_name'] = [i.strftime('%A') for i in all_dates]
     dim_date['month_name'] = [i.strftime('%B') for i in all_dates]
-    dim_date['quarter'] = [ceil(int(i)/3) for i in dim_date['month']]
+    dim_date['quarter'] = [ceil(int(i) / 3) for i in dim_date['month']]
     return dim_date

@@ -69,10 +69,11 @@ security-test:
 ## Run autopep8
 run-autopep:
 	$(call execute_in_env, autopep8 --in-place --aggressive --aggressive */*.py)
+	$(call execute_in_env, autopep8 --in-place --aggressive --aggressive */*/*.py)
 
 ## Run the flake8 code check
 run-flake:
-	$(call execute_in_env, flake8  ./src/*.py ./test/test_ingester_functions/*.py)
+	$(call execute_in_env, flake8  ./src/*.py ./test/*/*.py)
 
 ## Run the unit tests
 unit-test:

@@ -3,7 +3,7 @@ def to_dim_location(data):
     Formats data as required for revised database schema.
 
     args: data, a dict of table dicts
-    
+
     returns: dim_location, a dict containing data needed for dim_location table
     '''
     column_mapping = {
@@ -16,6 +16,6 @@ def to_dim_location(data):
         'country': 'country',
         'phone': 'phone'
     }
-    dim_location = {column_mapping[k]: data['address'][k] 
-                    for k in column_mapping.keys() }
+    dim_location = {column_mapping[k]: data['address'][k]
+                    for k in column_mapping.keys()}
     return dim_location
