@@ -181,8 +181,8 @@ def test_creates_readable_parquet():
 
         parquet_converter(list_dict, table_list)
     df_expected = pd.DataFrame.from_dict(sample_design_data)
-
-    parquet_body = wr.s3.read_parquet(path="s3://sandstone-processed-data/23-11-01/12-29/", dataset=True)
+    test_path = "s3://sandstone-processed-data/23-11-01/12-29/"
+    parquet_body = wr.s3.read_parquet(path=test_path, dataset=True)
     print(parquet_body.to_dict('tight'))
     assert df_expected.to_dict('tight') == parquet_body.to_dict('tight')
 
