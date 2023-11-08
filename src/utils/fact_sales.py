@@ -1,7 +1,7 @@
 """Temporary File for fact_staff_util"""
 
 
-def fact_staff_util(big_dict):
+def fact_sales_util(big_dict):
     """Returns the names of all the columns in the passed table from the
     connected PSQL database.
         Parameters:
@@ -11,9 +11,6 @@ def fact_staff_util(big_dict):
     salesorder = big_dict['sales_order']
     created_at = salesorder['created_at']
     last_updated = salesorder['last_updated']
-
-    if salesorder['sales_order_id'] == []:
-        return {}
 
     new_table = {
         'created_time': [date[11:] for date in created_at],

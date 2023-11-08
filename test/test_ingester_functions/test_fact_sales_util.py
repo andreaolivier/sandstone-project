@@ -1,9 +1,9 @@
-"""Tests for fact_staff_util function"""
-from src.utils.fact_staff import fact_staff_util
+"""Tests for fact_sales_util function"""
+from utils.fact_sales import fact_sales_util
 
 
-def test_fact_staff_util_returns_a_empty_dict_when_passed_empty_dict():
-    """Tests that fact_staff_util() returns an empty dictionary when passed a
+def test_fact_sales_util_returns_a_empty_dict_when_passed_empty_dict():
+    """Tests that fact_sales_util() returns an empty dictionary when passed a
     dictionary with empty lists.
     """
     data = {"sales_order": {
@@ -20,13 +20,13 @@ def test_fact_staff_util_returns_a_empty_dict_when_passed_empty_dict():
         "agreed_payment_date": [],
         "agreed_delivery_location_id": []
     }, "test": "test"}
-    result = fact_staff_util(data)
+    result = fact_sales_util(data)
 
     assert result == {}
 
 
-def test_fact_staff_util_returns_correct_keys_when_theres_data_passed():
-    """Tests that fact_staff_util() returns all correct keys when there is data
+def test_fact_sales_util_returns_correct_keys_when_theres_data_passed():
+    """Tests that fact_sales_util() returns all correct keys when there is data
     passed.
     """
     data = {"sales_order": {
@@ -44,7 +44,7 @@ def test_fact_staff_util_returns_correct_keys_when_theres_data_passed():
         "agreed_delivery_location_id": []
     }, "test": "test"}
 
-    result = fact_staff_util(data)
+    result = fact_sales_util(data)
 
     expected_keys = ['created_time', 'created_date', 'last_updated_time',
                      'last_updated_date', 'sales_order_id', 'design_id',
@@ -57,8 +57,8 @@ def test_fact_staff_util_returns_correct_keys_when_theres_data_passed():
     assert list(result.keys()) == expected_keys
 
 
-def test_fact_staff_util_returns_correct_date_and_times():
-    """Tests that fact_staff_util() returns the correct date for each column'.
+def test_fact_sales_util_returns_correct_date_and_times():
+    """Tests that fact_sales_util() returns the correct date for each column'.
     """
     data = {"sales_order": {
         "sales_order_id": [
@@ -200,7 +200,7 @@ def test_fact_staff_util_returns_correct_date_and_times():
         ]
     }, "test": "test"}
 
-    result = fact_staff_util(data)
+    result = fact_sales_util(data)
     expected = {
         "created_time": [
             "14:20:52.186000",
