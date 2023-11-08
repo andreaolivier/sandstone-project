@@ -1,4 +1,8 @@
 import pandas as pd
+import awswrangler as wr
+from datetime import datetime as dt
+
+
 
 data = {
     "department_id": [1, 2, 3, 4, 5, 6, 7, 8],
@@ -54,12 +58,16 @@ data = {
     ]
 }
 
+def parquet_converter(list_dict, table_list):
+    d = dt.today().strftime('%y-%m-%d')
+    h = dt.today().strftime('%H-%M')
+    for index, table in enumerate(list_dict):
+        table_name = table_list[index]
+        wr.s3.to_parquet(
+            df=pd.DataFrame.from_dict(table),
+            path=f's3://sandstone-processed-data/{d}/{h}/{table_name}.parquet'
+            )
+    
 
-dataframe = pd.DataFrame.from_dict(data)
-dataframe.to_parquet('test.parquet', index=False)
-print(pd.read_parquet('test.parquet'))
-
-def parquet_converter(dict):
-    dataframe = pd.DataFrame.from_dict(dict)
-    dataframe.to_parquet('test.parquet', index=False)
-    # print(pd.read_parquet('test.parquet'))
+#     dataframe.to_parquet('test.parquet', index=False)
+#     # print(pd.read_parquet('test.parquet'))
