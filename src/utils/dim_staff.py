@@ -1,6 +1,6 @@
 from pg8000.native import Connection
-from src.ingestion import get_table_data
 import os
+from src.ingestion import get_table_data
 
 def create_dim_staff(dict):
     try:
