@@ -1,4 +1,4 @@
-from utils.make_new_design_table import make_new_design_table
+from utils.dim_design import make_new_design_table
 
 import pytest
 
