@@ -1,4 +1,4 @@
-from src.utils.dim_date import dim_date
+from utils.dim_date import dim_date
 import json
 
 with open('./example_data/11-43.json') as f:
