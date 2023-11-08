@@ -1,14 +1,11 @@
 def create_dim_staff(dict):
-    try:
-      ids = dict['staff']['department_id']
-      dept_ids = dict['department']['department_id']
-      dept = dict['department']                                       
+    try:                                  
       dim_staff = {
   'staff_id': dict['staff']['staff_id'],
   'first_name': dict['staff']['first_name'],
   'last_name': dict['staff']['last_name'],
-  'department_name': [dept['department_name'][dept_ids.index(id)] for id in ids],
-  'location': [dept['location'][dept_ids.index(id)] for id in ids],
+  'department_name': [dict['department']['department_name'][id-1] for id in dict['staff']['department_id']],
+  'location': [dict['department']['location'][id-1] for id in dict['staff']['department_id']],
   'email_address': dict['staff']['email_address']
       }
       return(dim_staff)
