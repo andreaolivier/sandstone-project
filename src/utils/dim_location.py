@@ -6,7 +6,16 @@ def to_dim_location(data):
     
     returns: dim_location, a dict containing data needed for dim_location table
     '''
-    columns_to_skip = ['address_id', 'created_at', 'last_updated']
-    dim_location = {k: data['address'][k] for k in data['address'].keys() 
-                    if k not in columns_to_skip}
+    column_mapping = {
+        'address_id': 'location_id',
+        'address_line_1': 'address_line_1',
+        'address_line_2': 'address_line_2',
+        'district': 'district',
+        'city': 'city',
+        'postal_code': 'postal_code',
+        'country': 'country',
+        'phone': 'phone'
+    }
+    dim_location = {column_mapping[k]: data['address'][k] 
+                    for k in column_mapping.keys() }
     return dim_location
