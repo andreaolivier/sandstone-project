@@ -15,26 +15,18 @@ def processing_handler(event, context):
         json_data = get_latest_file(event)
         #Once the json data has been accessed, it is split up for use by other functions.
 
-
-        #JSON is already a dictionary, so this isn't dry coding
-        # currency = json_data['currency']
-        # payment = json_data['payment']
-        # department = json_data['department']
-        # design = json_data['design']
-        # counterparty = json_data['counterparty']
-        # purchase_order = json_data['purchase_order']
-        # payment_type = json_data['payment_type']
-        # sales_order = json_data['sales_order']
-        # address = json_data['address']
-        # staff = json_data['staff']
-        # transaction = json_data['transaction']
-
-        #These take a 
-        #fact_table = create_fact_table(arg1, arg2)
-        #dim_1 = create_dim_table_1(arg1)
-        #....
-        #dim_last = create_dim_table_last(arg1)
-
+        ## --------------- transformation functions ------
+        # check which dicts have data 
+        #   dim_date only runs first time !!
+        #   dim_location needs address
+        #   dim_staff needs (staff OUTER JOIN department) 
+        #   dim_counterparty needs (address and counterparty)
+        # make the function calls
+            #These take a 
+            #fact_table = create_fact_table(arg1, arg2)
+            #dim_1 = create_dim_table_1(arg1)
+            #....
+            #dim_last = create_dim_table_last(arg1)
         #Converted_database = Parquet_conversion(fact_table, dim_1,...)
         #Or
         #Converted_fact_table = PC(fact_table)
@@ -44,7 +36,8 @@ def processing_handler(event, context):
 
         # s3.put_object(
         #         Bucket='sandstone-processed-data',
-        #         Key=f"{date}/{hour}-processed.json",
+        #         Key=f"{date}/{hour}/table_name_processed.parquet",
+        #           e.g.   23-11-8/14-27/dim_date.parquet
         #         # Body=Converted_database
         # )
 
