@@ -12,3 +12,13 @@ variable "ingester_scheduler_name" {
     type = string
     default = "ingestion_scheduler"
 }
+
+variable "process_file_name" {
+    type = string
+    default = "processing_handler"
+}
+
+variable "process_lambda_name" {
+    type = string
+    default = "processing_handler"
+}

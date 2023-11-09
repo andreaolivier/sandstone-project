@@ -5,6 +5,7 @@ then transforms it into a dimensions table
 from pg8000.native import Connection
 from src.ingestion import get_table_data
 import os
+=======
 
 def dim_counter_party(data):
     """
@@ -22,6 +23,7 @@ def dim_counter_party(data):
             password=os.environ['DB_PASSWORD']
         )
     address_data = get_table_data(conn, 'address')
+
     dim_counterparty = {
         "counterparty_id": data["counterparty"]["counterparty_id"],
         "counterparty_legal_name": data["counterparty"]
