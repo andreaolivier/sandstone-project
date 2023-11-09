@@ -34,14 +34,13 @@ def processing_handler(event, context):
         #Once the json data has been accessed, it is split up for use by other functions.
         processed_data = []
         processed_table_names = []
-        for dict in json_data:
-            for data in dict:
+        for key, value in json_data.items():
+            for data in value:
                 if data == []:
                     continue
                 else:
-                    for key in json_data.keys():
-                        processed_data.append(utils_dict[key](json_data))
-                        processed_table_names.append(key)
+                    processed_data.append(utils_dict[key](json_data))
+                    processed_table_names.append(key)
         
         parquet_converter(processed_data, processed_table_names)
 
