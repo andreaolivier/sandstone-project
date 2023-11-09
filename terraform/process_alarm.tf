@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "process_alarm" {
-#This triggers an alarm when the ingester function reports an error.
+#This triggers an alarm when the process function reports an error.
     alarm_name = "CloudwatchAlarm"
     namespace = "ProcessLogging"
     metric_name = "ErrorCount"
@@ -31,9 +31,9 @@ resource "aws_cloudwatch_log_metric_filter" "process_error_filtering" {
 
 resource "aws_cloudwatch_metric_alarm" "process_duration_alarm" {
 #I thought it might be a good idea to add a duration error similar to the one from the sprint.
-#If I understand this right it should raise an error when the ingester runs for more than 10 minutes.
+#If I understand this right it should raise an error when the process runs for more than 10 minutes.
 #This shouldn't need a filter since it uses the AWS/Lambda namespace, which lambda functions automatically send metrics to.
-    alarm_name = "DurationAlarm"
+    alarm_name = "ProcessDurationAlarm"
     comparison_operator = "GreaterThanOrEqualToThreshold"
     evaluation_periods = 1
     namespace = "AWS/Lambda"

@@ -11,7 +11,7 @@ resource "aws_sns_topic_subscription" "process_subscription" {
     topic_arn = "arn:aws:sns:eu-west-2:${data.aws_caller_identity.current.account_id}:process-logging-sns-topic"
 	endpoint = "sandstone.de@gmail.com"
 
-    depends_on = [ aws_sns_topic.ingester_logging_sns ]
+    depends_on = [ aws_sns_topic.process_logging_sns ]
 	}
 
 
