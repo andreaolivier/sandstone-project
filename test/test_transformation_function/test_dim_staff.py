@@ -49,13 +49,12 @@ def test_returns_dict_with_info_when_passed_dict_of_dicts_with_info():
         },
     }
     result = {
-        'staff_id': [
-            1, 2, 3], 'first_name': [
-            'John', 'Pablo', 'Andrea'], 'last_name': [
-                'M', 'B', 'O'], 'department_name': [
-                    'Retail', 'Data', 'DevOps'], 'location': [
-                        'London', 'Edinburgh', 'Oxford'], 'email_address': [
-                            'john@', 'pablo@', 'andrea@']}
+        'staff_id': [1, 2, 3], 
+        'first_name': ['John', 'Pablo', 'Andrea'], 
+        'last_name': ['M', 'B', 'O'], 
+        'department_name': ['Retail', 'Data', 'DevOps'], 
+        'location': ['London', 'Edinburgh', 'Oxford'], 
+        'email_address': ['john@', 'pablo@', 'andrea@']}
 
     assert create_dim_staff(big_dict) == result
 
