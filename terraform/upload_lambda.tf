@@ -7,4 +7,13 @@ resource "aws_lambda_function" "upload_lambda" {
     handler = "upload.lambda_handler"
     # layers = [aws_lambda_layer_version.lambda_layer.arn]
     timeout = 60
+    environment {
+      variables = {
+        DB_USER = secrets.DW_USER,
+        DB_NAME = secrets.DW_NAME,
+        DB_PORT = secrets.DW_PORT,
+        DB_HOST = secrets.DW_HOST,
+        DB_PASSWORD = secrets.DW_PASSWORD
+      }
+    }
 }
