@@ -9,6 +9,7 @@ from src.utils.dim_design import make_new_design_table
 from src.utils.dim_location import to_dim_location
 from src.utils.dim_staff import create_dim_staff
 from src.utils.fact_sales import fact_sales_util
+from src.utils.parquet_converter import parquet_converter
 
 logger = logging.getLogger('TransformLogger')
 #Not sure if we want to use same logger as ingestion function here - they're going to be going to different log groups.
@@ -41,35 +42,12 @@ def processing_handler(event, context):
                     for key in json_data.keys():
                         processed_data.append(utils_dict[key](json_data))
                         processed_table_names.append(key)
-                    
+        
+        parquet_converter(processed_data, processed_table_names)
 
-
-        ## --------------- transformation functions ------
-        # check which dicts have data 
-        #   dim_date only runs first time !!
-        #   dim_location needs address
-        #   dim_staff needs (staff OUTER JOIN department) 
-        #   dim_counterparty needs (address and counterparty)
-        # make the function calls
-            #These take a 
-            #fact_table = create_fact_table(arg1, arg2)
-            #dim_1 = create_dim_table_1(arg1)
-            #....
-            #dim_last = create_dim_table_last(arg1)
-        #Converted_database = Parquet_conversion(fact_table, dim_1,...)
-        #Or
-        #Converted_fact_table = PC(fact_table)
-        #Converted_dim_1 = PC(dim_1)
-
-        #Once the tables have been created, this sends data into the processed bucket.
-
-        # s3.put_object(
-        #         Bucket='sandstone-processed-data',
-        #         Key=f"{date}/{hour}/table_name_processed.parquet",
-        #           e.g.   23-11-8/14-27/dim_date.parquet
-        #         # Body=Converted_database
-        # )
-
+        event_names_for_erros = get_object_path(event)
+        s3_object_name = event_names_for_erros['object']
+    
     except KeyError:
         logger.error('There was an issue with the bucket data, please investigate.')
     except ClientError as c:
