@@ -1,3 +1,9 @@
+resource "aws_lambda_layer_version" "lambda_layer" {
+    filename   = "${path.module}/../python.zip"
+    layer_name = "pandas_module_layer"
+    compatible_runtimes = ["python3.11"]
+}
+
 resource "aws_lambda_function" "ingester_lambda" {
     # filename = "${path.module}/../${var.lambda_name}.zip"
     filename = "${path.module}/../ingester.zip"
@@ -10,11 +16,11 @@ resource "aws_lambda_function" "ingester_lambda" {
     timeout = 60
     environment {
       variables = {
-        DB_USER = "project_user_7",
-        DB_NAME = "totesys",
-        DB_PORT = "5432",
-        DB_HOST = "nc-data-eng-totesys-production.chpsczt8h1nu.eu-west-2.rds.amazonaws.com",
-        DB_PASSWORD = "WRb2miiYPXX19TXr"
+        DB_USER = secrets.DB_USER,
+        DB_NAME = secrets.DB_NAME,
+        DB_PORT = secrets.DB_PORT,
+        DB_HOST = secrets.DB_HOST,
+        DB_PASSWORD = secrets.DB_PASSWORD
       }
     }
 }

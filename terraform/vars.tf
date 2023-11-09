@@ -22,3 +22,8 @@ variable "process_lambda_name" {
     type = string
     default = "processing_handler"
 }
+
+variable "upload_lambda" {
+    type = string
+    default = "lambda_handler"
+}
