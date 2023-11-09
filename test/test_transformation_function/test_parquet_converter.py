@@ -91,8 +91,8 @@ def test_date_hour_tablename_correct():
         Bucket='sandstone-processed-data',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
-    with patch('processing.dt.datetime') as dt:
-        dt.today.return_value = datetime(
+    with patch('processing.dt') as dt:
+        dt.datetime.today.return_value = datetime(
             2023, 11, 1, 12, 29, 7, 908653)
 
         parquet_converter(list_dict, table_list)
@@ -176,8 +176,8 @@ def test_creates_readable_parquet():
         Bucket='sandstone-processed-data',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
-    with patch('processing.dt.datetime') as dt:
-        dt.today.return_value = datetime(
+    with patch('processing.dt') as dt:
+        dt.datetime.today.return_value = datetime(
             2023, 11, 1, 12, 29, 7, 908653)
 
         parquet_converter(list_dict, table_list)
