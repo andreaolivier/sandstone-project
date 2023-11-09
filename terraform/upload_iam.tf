@@ -78,3 +78,4 @@ resource "aws_iam_policy" "upload_s3_policy" {
 resource "aws_iam_role_policy_attachment" "upload_lambda_s3_policy_attachment" {
   role       = aws_iam_role.upload_role.name
   policy_arn = aws_iam_policy.upload_s3_policy.arn
+}
