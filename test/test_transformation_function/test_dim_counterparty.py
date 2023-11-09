@@ -33,6 +33,9 @@ def test_dim_counter_party_returns_correct_values():
         "counterparty_legal_phone_number"
     ]
     assert list(result.keys()) == expected_columns
+    assert result["counterparty_legal_address_line_1"][0]=='605 Haskell Trafficway'
+    assert result[ "counterparty_legal_postal_code"][-1]=='99305-7380'
+
 
 
 def test_dim_counter_party_for_type_error():
