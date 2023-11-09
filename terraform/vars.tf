@@ -22,8 +22,3 @@ variable "process_lambda_name" {
     type = string
     default = "processing_handler"
 }
-
-variable "process_scheduler_name" {
-    type = string
-    default = "process_scheduler"
-}
