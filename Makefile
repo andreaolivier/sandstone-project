@@ -41,23 +41,23 @@ requirements: create-environment
 ################################################################################################################
 # # Set Up
 # ## Install bandit
-bandit:
-	$(call execute_in_env, $(PIP) install bandit)
+# bandit:
+# 	$(call execute_in_env, $(PIP) install bandit)
 
-## Install safety
-safety:
-	$(call execute_in_env, $(PIP) install safety)
+# ## Install safety
+# safety:
+# 	$(call execute_in_env, $(PIP) install safety)
 
-## Install flake8
-flake:
-	$(call execute_in_env, $(PIP) install flake8)
+# ## Install flake8
+# flake:
+# 	$(call execute_in_env, $(PIP) install flake8)
 
-## Install coverage
-coverage:
-	$(call execute_in_env, $(PIP) install coverage)
+# ## Install coverage
+# coverage:
+# 	$(call execute_in_env, $(PIP) install coverage)
 
 ## Set up dev requirements (bandit, safety, flake8, coverage)
-dev-setup: bandit safety flake coverage
+# dev-setup: bandit safety flake coverage
 
 # Build / Run
 
@@ -69,10 +69,11 @@ security-test:
 ## Run autopep8
 run-autopep:
 	$(call execute_in_env, autopep8 --in-place --aggressive --aggressive */*.py)
+	$(call execute_in_env, autopep8 --in-place --aggressive --aggressive */*/*.py)
 
 ## Run the flake8 code check
 run-flake:
-	$(call execute_in_env, flake8  ./src/*.py ./test/test_ingester_functions/*.py)
+	$(call execute_in_env, flake8  ./src/*.py ./test/*/*.py)
 
 ## Run the unit tests
 unit-test:
@@ -85,5 +86,5 @@ check-coverage:
 ## Run all checks
 run-checks: security-test run-flake unit-test check-coverage
 
-## Remove all files and buckets
-remove-aws-data: $(call execute_in_env, sh aws_script.sh)
+# ## Remove all files and buckets
+# remove-aws-data: $(call execute_in_env, sh aws_script.sh)

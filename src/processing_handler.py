@@ -2,6 +2,14 @@ import boto3
 import json
 import logging
 from botocore.exceptions import ClientError
+from src.utils.dim_currency import get_currency_data
+from src.utils.dim_counterparty import dim_counter_party
+from src.utils.dim_date import dim_date
+from src.utils.dim_design import make_new_design_table
+from src.utils.dim_location import to_dim_location
+from src.utils.dim_staff import create_dim_staff
+from src.utils.fact_sales import fact_sales_util
+
 logger = logging.getLogger('TransformLogger')
 #Not sure if we want to use same logger as ingestion function here - they're going to be going to different log groups.
 logger.setLevel(logging.INFO)
@@ -12,8 +20,29 @@ def processing_handler(event, context):
     This finds the latest file in the s3 bucket, gets it from the bucket, and runs transformation functions on it.
     '''
     try:
+        utils_dict = {
+            'currency': get_currency_data,
+            'counterparty': dim_counter_party,
+            'date': dim_date,
+            'design': make_new_design_table,
+            'location': to_dim_location,
+            'staff': create_dim_staff,
+            'sales_order': fact_sales_util,
+        }
         json_data = get_latest_file(event)
         #Once the json data has been accessed, it is split up for use by other functions.
+        processed_data = []
+        processed_table_names = []
+        for dict in json_data:
+            for data in dict:
+                if data == []:
+                    continue
+                else:
+                    for key in json_data.keys():
+                        processed_data.append(utils_dict[key](json_data))
+                        processed_table_names.append(key)
+                    
+
 
         ## --------------- transformation functions ------
         # check which dicts have data 

@@ -32,7 +32,7 @@ def test_get_objects_returns_an_empty_list_no_objects():
     client.create_bucket(
         Bucket='tester',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
-        )
+    )
 
     result = get_object_list(client, 'tester')
     print(result)
@@ -47,7 +47,7 @@ def test_get_objects_returns_all_objects_from_bucket_in_list():
     client.create_bucket(
         Bucket='tester',
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
-        )
+    )
 
     file_names = ['test1', 'test2', 'test3', 'test4']
 

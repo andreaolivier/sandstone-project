@@ -163,18 +163,18 @@ def test_creates_s3_object_if_bucket_has_objects_with_database_data_with_obj():
     and there is existing object with data.
     """
     data = {
-        "last_ids": {
-            "currency": 0,
-            "payment": 0,
-            "department": 0,
-            "design": 0,
-            "counterparty": 0,
-            "purchase_order": 0,
-            "payment_type": 0,
-            "sales_order": 0,
-            "address": 0,
-            "staff": 0,
-            "transaction": 0
+        "last_times": {
+            "currency": "2022-11-03 14:20:49.962000",
+            "payment": "2023-11-06 10:21:09.818000",
+            "department": "2022-11-03 14:20:49.962000",
+            "design": "2023-11-03 14:44:09.668000",
+            "counterparty": "2022-11-03 14:20:51.563000",
+            "purchase_order": "2023-11-06 09:17:09.759000",
+            "payment_type": "2022-11-03 14:20:49.962000",
+            "sales_order": "2023-11-06 10:21:09.818000",
+            "address": "2022-11-03 14:20:49.962000",
+            "staff": "2022-11-03 14:20:51.563000",
+            "transaction": "2023-11-06 10:21:09.818000"
         },
         "currency": {
             "currency_id": [1, 2, 3],
@@ -198,18 +198,18 @@ def test_creates_s3_object_if_bucket_has_objects_with_database_data_with_obj():
         }
     }
     data2 = {
-        "last_ids": {
-            "currency": 0,
-            "payment": 0,
-            "department": 0,
-            "design": 0,
-            "counterparty": 0,
-            "purchase_order": 0,
-            "payment_type": 0,
-            "sales_order": 0,
-            "address": 0,
-            "staff": 0,
-            "transaction": 0
+        "last_times": {
+            "currency": "2022-11-03 14:20:49.962000",
+            "payment": "2023-11-06 10:21:09.818000",
+            "department": "2022-11-03 14:20:49.962000",
+            "design": "2023-11-03 14:44:09.668000",
+            "counterparty": "2022-11-03 14:20:51.563000",
+            "purchase_order": "2023-11-06 09:17:09.759000",
+            "payment_type": "2022-11-03 14:20:49.962000",
+            "sales_order": "2023-11-06 10:21:09.818000",
+            "address": "2022-11-03 14:20:49.962000",
+            "staff": "2022-11-03 14:20:51.563000",
+            "transaction": "2023-11-06 10:21:09.818000"
         },
         "currency": {
             "currency_id": [],

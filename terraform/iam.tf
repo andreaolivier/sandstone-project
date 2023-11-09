@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "cw_document" {
 # Creates Cloudwatch policy
 
 resource "aws_iam_policy" "cw_policy" {
-  name_prefix = "cw-policy-${var.lambda_name}"
+  name = "cw-policy-${var.lambda_name}"
   policy      = data.aws_iam_policy_document.cw_document.json
 }
 

@@ -6,7 +6,7 @@ from pg8000 import InterfaceError, DatabaseError, Error
 from pg8000.native import Connection
 from dotenv import load_dotenv
 import boto3
-from ingestion import get_last_ids, get_all_table_data, check_for_new_values
+from ingestion import get_last_times, get_all_table_data, check_for_new_values
 
 
 logger = logging.getLogger('MyLogger')
@@ -42,11 +42,12 @@ def ingestion_handler(event="", context=""):
 
         bucket_name = 'sandstone-ingested-data'
 
-        last_ids = get_last_ids(s3, bucket_name)
+        last_times = get_last_times(s3, bucket_name)
 
-        data = get_all_table_data(conn, last_ids)
+        data = get_all_table_data(conn, last_times)
 
         if check_for_new_values(data):
+            print('saving')
             json_str = json.dumps(data, default=str)
 
             date = dt.today().strftime('%y-%m-%d')
@@ -57,7 +58,6 @@ def ingestion_handler(event="", context=""):
                 Key=f"{date}/{hour}.json",
                 Body=json_str,
             )
-
     except (InterfaceError, DatabaseError, Error) as pg_err:
         logger.error("Critical pg8000 error: %s", pg_err)
     except s3.exceptions.NoSuchKey as no_key_error:

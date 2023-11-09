@@ -22,7 +22,7 @@ def test_get_all_table_data():
     data = get_all_table_data(conn)
     data_keys = data.keys()
 
-    assert list(data_keys) == ['last_ids',
+    assert list(data_keys) == ['last_times',
                                'currency',
                                'payment',
                                'department',
@@ -58,7 +58,7 @@ def test_get_right_currency_table():
     assert list(get_data['currency'].keys()) == currency_table_columns
 
 
-def test_get_right_last_ids_table():
+def test_get_right_last_times_table():
     """Test that last_ids table contains the right content
         Asserts:
             list(get_data['last_ids'].keys()): Ensures that last_ids table has
@@ -84,7 +84,7 @@ def test_get_right_last_ids_table():
                               'transaction']
     get_data = get_all_table_data(conn)
 
-    assert list(get_data['last_ids'].keys()) == last_ids_table_columns
+    assert list(get_data['last_times'].keys()) == last_ids_table_columns
 
 
 def test_get_right_payment_table():
