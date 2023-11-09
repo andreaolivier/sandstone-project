@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_metric_alarm" "process_alarm" {
 #This triggers an alarm when the process function reports an error.
-    alarm_name = "CloudwatchAlarm"
+    alarm_name = "ProcessCloudwatchAlarm"
     namespace = "ProcessLogging"
     metric_name = "ErrorCount"
     comparison_operator = "GreaterThanOrEqualToThreshold"
