@@ -14,16 +14,15 @@ resource "aws_lambda_function" "ingester_lambda" {
     # handler = "${var.python_file_name}.ingestion_handler"
     layers = [aws_lambda_layer_version.lambda_layer.arn]
     timeout = 60
-    environment {
-      variables = {
-        DB_USER = secrets.DB_USER,
-        DB_NAME = secrets.DB_NAME,
-        DB_PORT = secrets.DB_PORT,
-        DB_HOST = secrets.DB_HOST,
-        DB_PASSWORD = secrets.DB_PASSWORD
-      }
-    }
-}
+    # environment {
+    #   # variables = {
+    #   # DB_USER = var.DB_USER,
+    #   # DB_NAME = var.DB_NAME,
+    #   # DB_PORT = var.DB_PORT,
+    #   # DB_HOST = var.DB_HOST,
+    #   # DB_PASSWORD = var.DB_PASSWORD
+    # }
+  }
 
 resource "aws_lambda_permission" "allow_eventbridge" {
     action         = "lambda:InvokeFunction"
