@@ -74,7 +74,7 @@ def parquet_converter(table_dicts, names_of_tables):
             df=pd.DataFrame.from_dict(table),
             path=f's3://sandstone-processed-data/{d}/{h}/{table_name}.parquet'
             )
-    
+
 
 #     dataframe.to_parquet('test.parquet', index=False)
 #     # print(pd.read_parquet('test.parquet'))

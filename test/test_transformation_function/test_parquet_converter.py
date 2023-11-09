@@ -1,14 +1,14 @@
-from src.utils.parquet_converter import parquet_converter
 from unittest.mock import patch
+from datetime import datetime
+import os
 from moto import mock_s3
 import boto3
 import botocore
 import pytest
-import os
-from datetime import datetime
 import awswrangler as wr
 import pandas as pd
-from pandas.testing import assert_frame_equal
+from src.utils.parquet_converter import parquet_converter
+
 
 @pytest.fixture
 def aws_credentials():
