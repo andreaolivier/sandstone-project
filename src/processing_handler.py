@@ -54,7 +54,7 @@ def processing_handler(event, context):
         if c.response['Error']['Code'] == 'NoSuchKey':
             logger.error(f'No object found - {s3_object_name}')
         elif c.response['Error']['Code'] == 'NoSuchBucket':
-            logger.error(f'Processed data bucket is missing')
+            logger.error('Processed data bucket is missing')
         else:
             raise
     except InvalidFileTypeError:
@@ -65,7 +65,9 @@ def processing_handler(event, context):
 
 
 def get_latest_file(event):
-    '''This is run within the handler to retrieve the object that triggered the most recent event.'''
+    '''This is run within the handler to retrieve the object that triggered
+    the most recent event.
+    '''
     try:
         event_names = get_object_path(event)
         s3_bucket_name = event_names['bucket']

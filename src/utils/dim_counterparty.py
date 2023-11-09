@@ -5,7 +5,7 @@ then transforms it into a dimensions table
 from pg8000.native import Connection
 from src.ingestion import get_table_data
 import os
-=======
+
 
 def dim_counter_party(data):
     """
@@ -14,14 +14,14 @@ def dim_counter_party(data):
     """
     if not isinstance(data, dict):
         raise TypeError("Invalid data format")
-    
+
     conn = Connection(
-            user=os.environ['DB_USER'],
-            database=os.environ['DB_NAME'],
-            port=os.environ['DB_PORT'],
-            host=os.environ['DB_HOST'],
-            password=os.environ['DB_PASSWORD']
-        )
+        user=os.environ['DB_USER'],
+        database=os.environ['DB_NAME'],
+        port=os.environ['DB_PORT'],
+        host=os.environ['DB_HOST'],
+        password=os.environ['DB_PASSWORD']
+    )
     address_data = get_table_data(conn, 'address')
 
     dim_counterparty = {

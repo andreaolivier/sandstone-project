@@ -1,5 +1,4 @@
 import pg8000
-import pandas as pd
 import awswrangler as wr
 import pg8000.dbapi
 import logging
