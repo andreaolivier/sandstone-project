@@ -3,6 +3,7 @@ import pandas as pd
 import awswrangler as wr
 import pg8000.dbapi
 import logging
+import os
 from botocore.exceptions import ClientError
 
 logger = logging.getLogger('MyLogger')
@@ -12,11 +13,12 @@ logger.setLevel(logging.INFO)
 def lambda_handler(event, context):
     try:
         conn = pg8000.dbapi.connect(
-            user='andrea',
-            database='test_processing',
-            port=5432,
-            host='localhost',
-            password='password123')
+            user=os.environ['DB_USER'],
+            database=os.environ['DB_NAME'],
+            port=os.environ['DB_PORT'],
+            host=os.environ['DB_HOST'],
+            password=os.environ['DB_PASSWORD']
+        )
         cursor = conn.cursor()
 
         s3_bucket_name = event['Records'][0]['s3']['bucket']['name']
