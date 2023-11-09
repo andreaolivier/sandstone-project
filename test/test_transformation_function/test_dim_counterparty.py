@@ -1,6 +1,6 @@
 import json
 import pytest
-from src.utils.dim_counterparty import dim_counter_party
+from utils.dim_counterparty import dim_counter_party
 
 
 def test_dim_counter_party_returns_a_dict():
