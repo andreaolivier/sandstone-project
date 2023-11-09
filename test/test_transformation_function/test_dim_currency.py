@@ -1,4 +1,4 @@
-from utils.dim_currency import get_currency_data
+from processing import get_currency_data
 
 TEST_INPUT_DATA = {"currency": {
     "currency_id": [1, 2, 3],
