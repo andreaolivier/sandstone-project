@@ -1,5 +1,5 @@
 """Tests for fact_sales_util function"""
-from utils.fact_sales import fact_sales_util
+from processing import fact_sales_util
 
 
 def test_fact_sales_util_returns_correct_keys_when_theres_data_passed():

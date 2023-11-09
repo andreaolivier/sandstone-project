@@ -1,4 +1,4 @@
-from utils.dim_location import to_dim_location
+from processing import to_dim_location
 import json
 
 with open('./example_data/11-43.json') as f:

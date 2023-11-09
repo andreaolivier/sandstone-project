@@ -1,4 +1,4 @@
-from utils.dim_staff import create_dim_staff
+from processing import create_dim_staff
 
 
 def test_returns_dict_with_no_info_when_passed_dict_of_dicts_with_no_info():
