@@ -109,6 +109,7 @@ def test_date_hour_tablename_correct():
 
     assert response_1 and response_2
 
+
 @mock_s3
 def test_creates_readable_parquet():
     '''Tests that parquet_converter creates
@@ -185,4 +186,3 @@ def test_creates_readable_parquet():
     parquet_body = wr.s3.read_parquet(path=test_path, dataset=True)
     print(parquet_body.to_dict('tight'))
     assert df_expected.to_dict('tight') == parquet_body.to_dict('tight')
-

@@ -26,6 +26,7 @@ def test_returns_dict_with_no_info_when_passed_dict_of_dicts_with_no_info():
 
     assert create_dim_staff(big_dict) == result
 
+
 def test_returns_empty_dict_when_passed_dict_with_only_dept_info():
     big_dict = {
         "staff": {
@@ -49,7 +50,7 @@ def test_returns_empty_dict_when_passed_dict_with_only_dept_info():
 
     result = {'staff_id': [], 'first_name': [], 'last_name': [],
               'department_name': [], 'location': [], 'email_address': []}
-    
+
     assert create_dim_staff(big_dict) == result
 
 
@@ -75,13 +76,12 @@ def test_returns_dict_with_info_when_passed_dict_with_only_staff_info():
         },
     }
 
-
     result = {
-        'staff_id': [1, 2, 3], 
-        'first_name': ['John', 'Pablo', 'Andrea'], 
-        'last_name': ['M', 'B', 'O'], 
-        'department_name': ['Purchasing', 'Dispatch', 'Production'], 
-        'location': ['Manchester', 'Leds', 'Leeds'], 
+        'staff_id': [1, 2, 3],
+        'first_name': ['John', 'Pablo', 'Andrea'],
+        'last_name': ['M', 'B', 'O'],
+        'department_name': ['Purchasing', 'Dispatch', 'Production'],
+        'location': ['Manchester', 'Leds', 'Leeds'],
         'email_address': ['john@', 'pablo@', 'andrea@']}
 
     assert create_dim_staff(big_dict) == result
