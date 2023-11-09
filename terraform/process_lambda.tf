@@ -8,10 +8,10 @@ resource "aws_lambda_function" "process_lambda" {
     timeout = 60
 }
 
-resource "aws_lambda_permission" "allow_s3" {
+resource "aws_lambda_permission" "allow_put_object_event" {
   action         = "lambda:InvokeFunction"
   function_name  = aws_lambda_function.process_lambda.function_name
   principal      = "s3.amazonaws.com"
-  source_arn     = aws_s3_bucket.processed_data_bucket.arn
-  source_account = data.aws_caller_identity.current.account_id
+  source_arn     = aws_s3_bucket.ingested_data_bucket.arn
+  source_account = data.aws_caller_identity.current
 }
