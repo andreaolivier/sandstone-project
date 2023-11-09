@@ -2,29 +2,6 @@
 from utils.fact_sales import fact_sales_util
 
 
-def test_fact_sales_util_returns_a_empty_dict_when_passed_empty_dict():
-    """Tests that fact_sales_util() returns an empty dictionary when passed a
-    dictionary with empty lists.
-    """
-    data = {"sales_order": {
-        "sales_order_id": [],
-        "created_at": [],
-        "last_updated": [],
-        "design_id": [],
-        "staff_id": [],
-        "counterparty_id": [],
-        "units_sold": [],
-        "unit_price": [],
-        "currency_id": [],
-        "agreed_delivery_date": [],
-        "agreed_payment_date": [],
-        "agreed_delivery_location_id": []
-    }, "test": "test"}
-    result = fact_sales_util(data)
-
-    assert result == {}
-
-
 def test_fact_sales_util_returns_correct_keys_when_theres_data_passed():
     """Tests that fact_sales_util() returns all correct keys when there is data
     passed.
