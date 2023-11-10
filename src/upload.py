@@ -12,11 +12,11 @@ logger.setLevel(logging.INFO)
 def lambda_handler(event, context):
     try:
         conn = pg8000.dbapi.connect(
-            user=os.environ['DB_USER'],
-            database=os.environ['DB_NAME'],
-            port=os.environ['DB_PORT'],
-            host=os.environ['DB_HOST'],
-            password=os.environ['DB_PASSWORD']
+            user=os.environ['DW_USER'],
+            database=os.environ['DW_NAME'],
+            port=os.environ['DW_PORT'],
+            host=os.environ['DW_HOST'],
+            password=os.environ['DW_PASSWORD']
         )
         cursor = conn.cursor()
 
@@ -40,7 +40,7 @@ def lambda_handler(event, context):
 
         for row in table_dict['data']:
             cursor.execute(
-                f"INSERT INTO {table_name} "
+                f"INSERT INTO project_team_7.{table_name} "
                 f" VALUES ({placeholders}) ",
                 tuple(f'{str(i)}' for i in row)
             )
