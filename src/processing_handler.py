@@ -29,13 +29,18 @@ def processing_handler(event, context):
         json_data = get_latest_file(event)
         processed_data = []
         processed_table_names = []
+        
         for key, value in json_data.items():
+            contains_data = False
             for data in value:
-                if data == []:
-                    continue
-                else:
-                    processed_data.append(utils_dict[key](json_data))
-                    processed_table_names.append(key)
+                if value[data] == []:
+                    contains_data = False
+                elif key in utils_dict.keys():
+                    contains_data = True
+            if contains_data:
+                print('calling ', key)
+                processed_data.append(utils_dict[key](json_data))
+                processed_table_names.append(key)
 
         parquet_converter(processed_data, processed_table_names)
 
