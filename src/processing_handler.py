@@ -22,15 +22,15 @@ def processing_handler(event, context):
         
         s3 = boto3.client('s3')
         all_objects = s3.list_objects_v2(
-            Bucket='test-sandstone-empty'
+            Bucket='sandstone-processed-data'
             )
         
         if all_objects['Contents']:
             pass
         else:
             date = to_dim_date()
-            processed_data.appened(date)
-            processed_table_names.append('date')
+            processed_data.append(date)
+            processed_table_names.append('dim_date')
 
         utils_dict = {
             'currency': get_currency_data,
@@ -40,6 +40,16 @@ def processing_handler(event, context):
             'staff': create_dim_staff,
             'sales_order': fact_sales_util,
         }
+
+        lookup = {
+            'currency': 'dim_currency',
+            'counterparty': 'dim_counterparty',
+            'design': 'dim_design',
+            'address': 'dim_location',
+            'staff': 'dim_staff',
+            'sales_order': 'fact_sales_order'
+        }
+
         json_data = get_latest_file(event)
         
         for key, value in json_data.items():
@@ -51,12 +61,11 @@ def processing_handler(event, context):
                     contains_data = True
             if contains_data:
                 processed_data.append(utils_dict[key](json_data))
-                processed_table_names.append(key)
+                processed_table_names.append(lookup[key])
 
         parquet_converter(processed_data, processed_table_names)
 
-        event_names_for_erros = get_object_path(event)
-        s3_object_name = event_names_for_erros['object']
+        s3_object_name = get_object_path(event)['object']
 
     except KeyError:
         logger.error(
@@ -83,6 +92,7 @@ def get_latest_file(event):
         event_names = get_object_path(event)
         s3_bucket_name = event_names['bucket']
         s3_object_name = event_names['object']
+
         logger.info(f'Bucket is {s3_bucket_name}')
         logger.info(f'Object is {s3_object_name}')
 
