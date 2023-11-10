@@ -2,14 +2,7 @@ import boto3
 import json
 import logging
 from botocore.exceptions import ClientError
-from src.utils.dim_currency import get_currency_data
-from src.utils.dim_counterparty import dim_counter_party
-from src.utils.dim_date import dim_date
-from src.utils.dim_design import make_new_design_table
-from src.utils.dim_location import to_dim_location
-from src.utils.dim_staff import create_dim_staff
-from src.utils.fact_sales import fact_sales_util
-from src.utils.parquet_converter import parquet_converter
+from processing import get_currency_data, dim_counter_party, dim_date, make_new_design_table, to_dim_location, create_dim_staff, fact_sales_util, parquet_converter
 
 
 logger = logging.getLogger('TransformLogger')

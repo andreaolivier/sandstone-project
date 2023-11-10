@@ -22,6 +22,7 @@ resource "aws_lambda_function" "ingester_lambda" {
     #   # DB_HOST = var.DB_HOST,
     #   # DB_PASSWORD = var.DB_PASSWORD
     # }
+    depends_on = [ aws_lambda_layer_version.lambda_layer ]
   }
 
 resource "aws_lambda_permission" "allow_eventbridge" {
