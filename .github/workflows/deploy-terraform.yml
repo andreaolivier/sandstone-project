@@ -20,30 +20,48 @@ jobs:
 
       - name: Terraform Init
         working-directory: terraform
-        run: terraform init
+        run: 
+
+          terraform init 
         env:
           DB_USER: ${{ secrets.DB_USER }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
+          DW_USER: ${{ secrets.DW_USER }}
+          DW_NAME: ${{ secrets.DW_NAME }}
+          DW_PORT: ${{ secrets.DW_PORT }}
+          DW_HOST: ${{ secrets.DW_HOST }}
+          DW_PASSWORD: ${{ secrets.DW_PASSWORD }}
       - name: Terraform plan
         working-directory: terraform
-        run: terraform plan
+        run: 
+          
+          terraform plan -input=false -var-file="variables.tfvar"
         env:
           DB_USER: ${{ secrets.DB_USER }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DW_USER: ${{ secrets.DW_USER }}
+          DW_NAME: ${{ secrets.DW_NAME }}
+          DW_PORT: ${{ secrets.DW_PORT }}
+          DW_HOST: ${{ secrets.DW_HOST }}
+          DW_PASSWORD: ${{ secrets.DW_PASSWORD }}
 
       - name: Terraform Apply
         working-directory: terraform
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -input=false -var-file="variables.tfvar"
         env:
           DB_USER: ${{ secrets.DB_USER }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DW_USER: ${{ secrets.DW_USER }}
+          DW_NAME: ${{ secrets.DW_NAME }}
+          DW_PORT: ${{ secrets.DW_PORT }}
+          DW_HOST: ${{ secrets.DW_HOST }}
+          DW_PASSWORD: ${{ secrets.DW_PASSWORD }}
