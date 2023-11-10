@@ -2,7 +2,9 @@ import boto3
 import json
 import logging
 from botocore.exceptions import ClientError
-from processing import get_currency_data, dim_counter_party, dim_date, make_new_design_table, to_dim_location, create_dim_staff, fact_sales_util, parquet_converter
+from processing import get_currency_data, dim_counter_party, dim_date, \
+    make_new_design_table, to_dim_location, create_dim_staff, \
+        fact_sales_util, parquet_converter
 
 
 logger = logging.getLogger('TransformLogger')
