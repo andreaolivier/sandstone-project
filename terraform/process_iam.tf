@@ -58,7 +58,8 @@ data "aws_iam_policy_document" "process_s3_document" {
   statement {
     actions = ["s3:PutObject",
               "s3:GetObject",
-              "s3:ListBucket"]
+              "s3:ListBucket",
+              "s3:ListObjects"]
     resources = [
       "${aws_s3_bucket.processed_data_bucket.arn}",
       "${aws_s3_bucket.processed_data_bucket.arn}/*"
