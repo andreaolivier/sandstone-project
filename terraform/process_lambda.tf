@@ -6,6 +6,15 @@ resource "aws_lambda_function" "process_lambda" {
     handler = "processing_handler.processing_handler"
     layers = [aws_lambda_layer_version.lambda_layer.arn]
     timeout = 60
+    environment {
+      variables = {
+      DB_USER = var.db_user,
+      DB_NAME = var.db_name,
+      DB_PORT = var.db_port,
+      DB_HOST = var.db_host,
+      DB_PASSWORD = var.db_password
+    }
+    }
 }
 
 resource "aws_lambda_permission" "allow_put_object_event" {
