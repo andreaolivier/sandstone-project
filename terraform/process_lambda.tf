@@ -5,7 +5,7 @@ resource "aws_lambda_function" "process_lambda" {
     runtime = "python3.11"
     handler = "processing_handler.processing_handler"
     layers = ["arn:aws:lambda:eu-west-2:572843110802:layer:updated_layer:1", 
-    "arn:aws:lambda:eu-west-2:336392948345:layer:AWSSDKPandas-Python311:2"]
+    "arn:aws:lambda:eu-west-2:336392948345:layer:AWSSDKPandas-Python311:3"]
     timeout = 60
     environment {
       variables = {
