@@ -5,7 +5,8 @@ resource "aws_lambda_function" "upload_lambda" {
     # create upload role
     runtime = "python3.11"
     handler = "upload.lambda_handler"
-    # layers = [aws_lambda_layer_version.lambda_layer.arn]
+    layers = ["arn:aws:lambda:eu-west-2:572843110802:layer:updated_layer:1", 
+    "arn:aws:lambda:eu-west-2:336392948345:layer:AWSSDKPandas-Python311:2"]
     timeout = 60
     environment {
       variables = {
