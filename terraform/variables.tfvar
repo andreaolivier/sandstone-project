@@ -1,0 +1,10 @@
+db_host=$DB_SECRETS
+db_name=$DB_NAME
+db_user = $DB_USER
+db_port = $DB_PORT
+db_password = $DB_PASSWORD
+dw_host=$DW_SECRETS
+dw_name=$DW_NAME
+dw_user = $DW_USER
+dw_port = $DW_PORT
+dw_password = $DW_PASSWORD

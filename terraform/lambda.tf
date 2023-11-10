@@ -14,14 +14,15 @@ resource "aws_lambda_function" "ingester_lambda" {
     # handler = "${var.python_file_name}.ingestion_handler"
     layers = [aws_lambda_layer_version.lambda_layer.arn]
     timeout = 60
-    # environment {
-    #   # variables = {
-    #   # DB_USER = var.DB_USER,
-    #   # DB_NAME = var.DB_NAME,
-    #   # DB_PORT = var.DB_PORT,
-    #   # DB_HOST = var.DB_HOST,
-    #   # DB_PASSWORD = var.DB_PASSWORD
-    # }
+    environment {
+      variables = {
+      DB_USER = var.db_user,
+      DB_NAME = var.db_name,
+      DB_PORT = var.db_port,
+      DB_HOST = var.db_host,
+      DB_PASSWORD = var.db_password
+    }
+    }
     depends_on = [ aws_lambda_layer_version.lambda_layer ]
   }
 
