@@ -87,7 +87,7 @@ def get_currency_data(data):
     return currency_data
 
 
-def dim_date():
+def to_dim_date():
     """
     Generates and formats dates from 01/01/20 to 01/01/29
 

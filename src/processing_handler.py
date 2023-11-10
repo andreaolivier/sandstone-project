@@ -2,7 +2,7 @@ import boto3
 import json
 import logging
 from botocore.exceptions import ClientError
-from processing import get_currency_data, dim_counter_party, dim_date, \
+from processing import get_currency_data, dim_counter_party, to_dim_date, \
     make_new_design_table, to_dim_location, create_dim_staff, \
         fact_sales_util, parquet_converter
 
@@ -17,25 +17,41 @@ def processing_handler(event, context):
     runs transformation functions on it.
     '''
     try:
+        processed_data = []
+        processed_table_names = []
+        
+        s3 = boto3.client('s3')
+        all_objects = s3.list_objects_v2(
+            Bucket='test-sandstone-empty'
+            )
+        
+        if all_objects['Contents']:
+            pass
+        else:
+            date = to_dim_date()
+            processed_data.appened(date)
+            processed_table_names.append('date')
+
         utils_dict = {
             'currency': get_currency_data,
             'counterparty': dim_counter_party,
-            'date': dim_date,
             'design': make_new_design_table,
-            'location': to_dim_location,
+            'address': to_dim_location,
             'staff': create_dim_staff,
             'sales_order': fact_sales_util,
         }
         json_data = get_latest_file(event)
-        processed_data = []
-        processed_table_names = []
+        
         for key, value in json_data.items():
+            contains_data = False
             for data in value:
-                if data == []:
-                    continue
-                else:
-                    processed_data.append(utils_dict[key](json_data))
-                    processed_table_names.append(key)
+                if value[data] == []:
+                    contains_data = False
+                elif key in utils_dict.keys():
+                    contains_data = True
+            if contains_data:
+                processed_data.append(utils_dict[key](json_data))
+                processed_table_names.append(key)
 
         parquet_converter(processed_data, processed_table_names)
 
