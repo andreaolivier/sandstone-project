@@ -40,7 +40,7 @@ def lambda_handler(event, context):
 
         for row in table_dict['data']:
             cursor.execute(
-                f"INSERT INTO {table_name} "
+                f"INSERT INTO project_team_7.{table_name} "
                 f" VALUES ({placeholders}) ",
                 tuple(f'{str(i)}' for i in row)
             )
