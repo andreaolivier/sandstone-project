@@ -50,7 +50,7 @@ jobs:
           DW_HOST: ${{ secrets.DW_HOST }}
           DW_PASSWORD: ${{ secrets.DW_PASSWORD }}
         run: 
-            terraform plan -input=false -var 'db_host=$DB_HOST' -var 'db_name=$DB_NAME'  -var 'db_user=$DB_USER' -var 'db_port=$DB_PORT' -var 'db_password=$DB_PASSWORD' -var 'dw_host=$DW_HOST' -var 'dw_name=$DW_NAME' -var 'dw_user=$DW_USER' -var 'dw_port=$DW_PORT' -var 'dw_password=$DW_PASSWORD'
+            terraform plan -input=false -var db_host=$DB_HOST -var db_name=$DB_NAME  -var db_user=$DB_USER -var db_port=$DB_PORT -var db_password=$DB_PASSWORD -var dw_host=$DW_HOST -var dw_name=$DW_NAME -var dw_user=$DW_USER -var dw_port=$DW_PORT -var dw_password=$DW_PASSWORD
       - name: Terraform Apply
         working-directory: terraform
         
@@ -65,4 +65,4 @@ jobs:
           DW_PORT: ${{ secrets.DW_PORT }}
           DW_HOST: ${{ secrets.DW_HOST }}
           DW_PASSWORD: ${{ secrets.DW_PASSWORD }}
-        run: terraform apply -auto-approve -input=false -var 'db_host=$DB_HOST' -var 'db_name=$DB_NAME'  -var 'db_user=$DB_USER' -var 'db_port=$DB_PORT' -var 'db_password=$DB_PASSWORD' -var 'dw_host=$DW_HOST' -var 'dw_name=$DW_NAME' -var 'dw_user=$DW_USER' -var 'dw_port=$DW_PORT' -var 'dw_password=$DW_PASSWORD'
+        run: terraform apply -auto-approve -input=false -var db_host=$DB_HOST -var db_name=$DB_NAME  -var db_user=$DB_USER -var db_port=$DB_PORT -var db_password=$DB_PASSWORD -var dw_host=$DW_HOST -var dw_name=$DW_NAME -var dw_user=$DW_USER -var dw_port=$DW_PORT -var dw_password=$DW_PASSWORD
