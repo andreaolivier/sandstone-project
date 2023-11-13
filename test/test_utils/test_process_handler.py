@@ -142,45 +142,48 @@ def test_get_latest_file_raises_file_type_error(caplog):
 #         assert 'No object found - 23-11-01/12-10.json' in caplog.text
 
 
-# @mock_s3
-# def test_processing_handler_calls_the_right_function():
-#     mock_event = {
-#     "Records": [
-#         {
-#             "s3": {
-#                 "s3SchemaVersion": "1.0",
-#                 "configurationId": "MyLambdaTrigger",
-#                 "bucket": {
-#                 "name": "sandstone-ingested-data",
-#                 "ownerIdentity": {
-#                     "principalId": "A3NL1KOZZKExample"
-#                 },
-#                 },
-#                 "object": {
-#                 "key": "23-11-01/12-10.json",
+@mock_s3
+def test_processing_handler_calls_the_right_function():
+    mock_event = {
+    "Records": [
+        {
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "MyLambdaTrigger",
+                "bucket": {
+                "name": "sandstone-ingested-data",
+                "ownerIdentity": {
+                    "principalId": "A3NL1KOZZKExample"
+                },
+                },
+                "object": {
+                "key": "23-11-01/12-10.json",
 
-#                 }
-#             }
-#         }
-#     ]
-#     }
+                }
+            }
+        }
+    ]
+    }
 
-#     client = botocore.session.get_session().create_client('s3')
-#     client.create_bucket(
-#         Bucket='sandstone-ingested-data',
-#         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
-#     )
+    client = botocore.session.get_session().create_client('s3')
+    client.create_bucket(
+        Bucket='sandstone-ingested-data',
+        CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
+    )
 
-#     with open('./example_data/13-33.json') as f:
-#         test_data = json.load(f)
-#     client.put_object(
-#             Body=json.dumps(test_data),
-#             Bucket='sandstone-ingested-data',
-#             Key='23-11-01/12-10.json',
-#     )
-#     output = get_latest_file(mock_event)
-#     assert isinstance(output, dict)
+    with open('./example_data/13-33.json') as f:
+        ingested_data = json.load(f)
+    client.put_object(
+            Body=json.dumps(ingested_data),
+            Bucket='sandstone-ingested-data',
+            Key='23-11-01/12-10.json',
+    )
 
+    client = botocore.session.get_session().create_client('s3')
+    client.create_bucket(
+            Bucket='sandstone-processed-data',
+            CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
+        )
 # with patch('src.processing.make_new_design_table') as mockClass:
 #     processing_handler(mock_event, "")
 #     mockClass.assert_called_once
