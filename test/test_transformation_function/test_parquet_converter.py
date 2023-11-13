@@ -95,7 +95,7 @@ def test_date_hour_tablename_correct():
         dt.datetime.today.return_value = datetime(
             2023, 11, 1, 12, 29, 7, 908653)
 
-        parquet_converter(list_dict, table_list)
+        parquet_converter(list_dict, table_list, client)
     response_1 = client.get_object(
         Bucket='sandstone-processed-data',
         Key='23-11-01/12-29/abc.parquet'
@@ -180,7 +180,7 @@ def test_creates_readable_parquet():
         dt.datetime.today.return_value = datetime(
             2023, 11, 1, 12, 29, 7, 908653)
 
-        parquet_converter(list_dict, table_list)
+        parquet_converter(list_dict, table_list, client)
     df_expected = pd.DataFrame.from_dict(sample_design_data)
     test_path = "s3://sandstone-processed-data/23-11-01/12-29/"
     parquet_body = wr.s3.read_parquet(path=test_path, dataset=True)
