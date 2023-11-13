@@ -1,4 +1,4 @@
-from processing_handler import get_latest_file
+from processing_handler import get_latest_file, InvalidFileTypeError
 from moto import mock_s3
 import json
 import botocore
@@ -91,8 +91,11 @@ def test_get_latest_file_raises_file_type_error(caplog):
             Bucket='sandstone-ingested-data',
             Key='23-11-01/12-10.txt',
         )
-        get_latest_file(mock_event, client)
-        assert 'File 23-11-01/12-10.txt is not a JSON' in caplog.text
+        try:
+            get_latest_file(mock_event, client)
+            assert False
+        except InvalidFileTypeError:
+            assert True
 
 # @mock_s3
 # def test_get_latest_file_raises_client_error(caplog):
