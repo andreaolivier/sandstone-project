@@ -4,7 +4,11 @@ import datetime as dt
 from math import ceil
 import os
 import pandas as pd
-import awswrangler as wr
+import logging
+import io
+
+logger = logging.getLogger('processinglogger')
+logger.setLevel(logging.INFO)
 
 
 def dim_counter_party(data):
@@ -12,6 +16,8 @@ def dim_counter_party(data):
     The dim_counter_party function first checks if the input data is a dict.
     If yes, it creates the dimension table else it throws a type error
     """
+    logger.info('COUNTERPARTY')
+
     if not isinstance(data, dict):
         raise TypeError("Invalid data format")
 
@@ -22,6 +28,7 @@ def dim_counter_party(data):
         host=os.environ['DB_HOST'],
         password=os.environ['DB_PASSWORD']
     )
+
     address_data = get_table_data(conn, 'address')
 
     dim_counterparty = {
@@ -69,7 +76,8 @@ def dim_counter_party(data):
 
 
 def get_currency_data(data):
-    '''takes a dict of dicts as arguments and returns a dict
+    logger.info('CURRENCY DATA')
+    '''Takes a dict of dicts as arguments and returns a dict
     with keys 'currency_id', 'currency_code' and 'currency_name'
     assigns a currency name by matching currency_code to key in curr_name'''
     curr_name = {
@@ -88,6 +96,7 @@ def get_currency_data(data):
 
 
 def to_dim_date():
+    logger.info('DIM DATE')
     """
     Generates and formats dates from 01/01/20 to 01/01/29
 
@@ -110,6 +119,7 @@ def to_dim_date():
 
 
 def make_new_design_table(big_dict):
+    logger.info('DESIGN TABLE')
     '''This takes the full data dictionary and returns a dictionary'''
     '''containing lists of the appropriate columns, '''
     '''maintaining the same structure otherwise.'''
@@ -123,6 +133,7 @@ def make_new_design_table(big_dict):
 
 
 def to_dim_location(data):
+    logger.info('LOCATION')
     '''
     Formats data as required for revised database schema.
 
@@ -147,6 +158,8 @@ def to_dim_location(data):
 
 def create_dim_staff(dict):
     try:
+        logger.info('DIM STAFF')
+
         conn = Connection(
             user=os.environ['DB_USER'],
             database=os.environ['DB_NAME'],
@@ -181,6 +194,8 @@ def fact_sales_util(big_dict):
             big_dict (dict): Table data from a database sorted by tables and
             columns.
     """
+    logger.info('FACT SALES')
+
     salesorder = big_dict['sales_order']
     created_at = salesorder['created_at']
     last_updated = salesorder['last_updated']
@@ -199,19 +214,30 @@ def fact_sales_util(big_dict):
     return new_table
 
 
-def parquet_converter(table_dicts, names_of_tables):
+def parquet_converter(table_dicts, names_of_tables, s3):
     '''This converts the inputted list of dictionaries to parquet files, and
     sends them into the sandstone-processed-data bucket on s3.
     Parameters:
         table_dicts: This is a list of fact and dim dictionaries created by
         the transformation functions.
         names_of_tables: This is a list of the names of the tables
-        within the table_dicts.'''
+        within the table_dicts.
+    '''
+    logger.info('PARQUET CONVERTER')
+
     d = dt.datetime.today().strftime('%y-%m-%d')
     h = dt.datetime.today().strftime('%H-%M')
+
     for index, table in enumerate(table_dicts):
         table_name = names_of_tables[index]
-        wr.s3.to_parquet(
-            df=pd.DataFrame.from_dict(table),
-            path=f's3://sandstone-processed-data/{d}/{h}/{table_name}.parquet'
+        df = pd.DataFrame.from_dict(table)
+
+        bytes_parquet = df.to_parquet()
+        pq_file = io.BytesIO(bytes_parquet)
+
+        s3.put_object(
+            Bucket='sandstone-processed-data',
+            Key=f'{d}/{h}/{table_name}.parquet',
+            Body=pq_file
         )
+        logger.info(f'parquet file written {table_name}')

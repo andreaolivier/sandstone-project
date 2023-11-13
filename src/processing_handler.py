@@ -2,9 +2,9 @@ import boto3
 import json
 import logging
 from botocore.exceptions import ClientError
-from processing import get_currency_data, dim_counter_party, to_dim_date, \
+from processing import to_dim_date, get_currency_data, dim_counter_party, \
     make_new_design_table, to_dim_location, create_dim_staff, \
-        fact_sales_util, parquet_converter
+    fact_sales_util, parquet_converter
 
 
 logger = logging.getLogger('TransformLogger')
@@ -19,15 +19,14 @@ def processing_handler(event, context):
     try:
         processed_data = []
         processed_table_names = []
-        
+
         s3 = boto3.client('s3')
         all_objects = s3.list_objects_v2(
             Bucket='sandstone-processed-data'
-            )
-        
-        if all_objects['Contents']:
-            pass
-        else:
+        )
+
+        if 'Contents' not in all_objects:
+
             date = to_dim_date()
             processed_data.append(date)
             processed_table_names.append('dim_date')
@@ -50,8 +49,8 @@ def processing_handler(event, context):
             'sales_order': 'fact_sales_order'
         }
 
-        json_data = get_latest_file(event)
-        
+        json_data = get_latest_file(event, s3)
+
         for key, value in json_data.items():
             contains_data = False
             for data in value:
@@ -63,61 +62,48 @@ def processing_handler(event, context):
                 processed_data.append(utils_dict[key](json_data))
                 processed_table_names.append(lookup[key])
 
-        parquet_converter(processed_data, processed_table_names)
-
-        s3_object_name = get_object_path(event)['object']
-
-    except KeyError:
+        parquet_converter(processed_data, processed_table_names, s3)
+    except KeyError as e:
+        logger.error(event['Records'][0]['s3']['object']['key'])
+        logger.error(e)
         logger.error(
             'There was an issue with the bucket data, please investigate.')
     except ClientError as c:
         if c.response['Error']['Code'] == 'NoSuchKey':
-            logger.error(f'No object found - {s3_object_name}')
+            logger.error(c)
         elif c.response['Error']['Code'] == 'NoSuchBucket':
             logger.error('Processed data bucket is missing')
         else:
             raise
     except InvalidFileTypeError:
-        logger.error(f'File {s3_object_name} is not a JSON')
+        logger.error('File is not a JSON')
     except Exception as e:
         logger.error(e)
-        raise RuntimeError
 
 
-def get_latest_file(event):
+def get_latest_file(event, s3):
     '''This is run within the handler to retrieve the object that triggered
     the most recent event.
     '''
-    try:
-        event_names = get_object_path(event)
-        s3_bucket_name = event_names['bucket']
-        s3_object_name = event_names['object']
+    logger.info('GET_LATEST_FILE')
 
-        logger.info(f'Bucket is {s3_bucket_name}')
-        logger.info(f'Object is {s3_object_name}')
+    event_names = get_object_path(event)
+    s3_bucket_name = event_names['bucket']
+    s3_object_name = event_names['object']
 
-        if s3_object_name[-4:] != 'json':
-            raise InvalidFileTypeError
-        s3 = boto3.client('s3')
+    logger.info(f'Bucket is {s3_bucket_name}')
+    logger.info(f'Object is {s3_object_name}')
 
-        get_data = s3.get_object(Bucket=s3_bucket_name, Key=s3_object_name)
-        json_data = json.load(get_data['Body'])
-        return json_data
-    except ClientError as c:
-        if c.response['Error']['Code'] == 'NoSuchKey':
-            logger.error(f'No object found - {s3_object_name}')
-        elif c.response['Error']['Code'] == 'NoSuchBucket':
-            logger.error(f'No such bucket - {s3_bucket_name}')
-        else:
-            raise
-    except InvalidFileTypeError:
-        logger.error(f'File {s3_object_name} is not a JSON')
-    except Exception as e:
-        logger.error(e)
-        raise RuntimeError
+    if s3_object_name[-4:] != 'json':
+        raise InvalidFileTypeError
+
+    get_data = s3.get_object(Bucket=s3_bucket_name, Key=s3_object_name)
+    json_data = json.load(get_data['Body'])
+    return json_data
 
 
 def get_object_path(event_file):
+    logger.info('GET_OBJECT_PATH')
     """Extracts bucket and object references from Records field of event."""
     return {'bucket': event_file['Records'][0]['s3']['bucket']['name'],
             'object': event_file['Records'][0]['s3']['object']['key']}
