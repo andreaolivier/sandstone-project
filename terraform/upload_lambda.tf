@@ -17,4 +17,5 @@ resource "aws_lambda_function" "upload_lambda" {
       DW_PASSWORD = var.dw_password
     }
     }
+    depends_on = [ aws_cloudwatch_log_group.upload_lambda ]
 }

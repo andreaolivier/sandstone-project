@@ -16,6 +16,7 @@ resource "aws_lambda_function" "process_lambda" {
       DB_PASSWORD = var.db_password
     }
     }
+    depends_on = [ aws_cloudwatch_log_group.process_lambda ]
 }
 
 resource "aws_lambda_permission" "allow_put_object_event" {
