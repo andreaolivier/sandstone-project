@@ -12,7 +12,7 @@ resource "aws_lambda_function" "ingester_lambda" {
     runtime = "python3.11"
     handler = "ingester.ingestion_handler"
     # handler = "${var.python_file_name}.ingestion_handler"
-    layers = ["arn:aws:lambda:eu-west-2:572843110802:layer:updated_layer:1"]
+    layers = ["arn:aws:lambda:eu-west-2:572843110802:layer:updated_layer:2"]
     timeout = 60
     environment {
       variables = {
