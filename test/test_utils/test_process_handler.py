@@ -44,7 +44,7 @@ def test_get_latest_file_returns_dictionary():
         Bucket='sandstone-ingested-data',
         Key='23-11-01/12-10.json',
     )
-    output = get_latest_file(mock_event)
+    output = get_latest_file(mock_event, client)
     assert isinstance(output, dict)
     assert output == val2
 
@@ -91,7 +91,7 @@ def test_get_latest_file_raises_file_type_error(caplog):
             Bucket='sandstone-ingested-data',
             Key='23-11-01/12-10.txt',
         )
-        get_latest_file(mock_event)
+        get_latest_file(mock_event, client)
         assert 'File 23-11-01/12-10.txt is not a JSON' in caplog.text
 
 # @mock_s3
