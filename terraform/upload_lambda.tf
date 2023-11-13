@@ -18,3 +18,10 @@ resource "aws_lambda_function" "upload_lambda" {
     }
     }
 }
+
+resource "aws_lambda_permission" "parquet_object_added" {
+  action         = "lambda:InvokeFunction"
+  function_name  = aws_lambda_function.upload_lambda.function_name
+  principal      = "s3.amazonaws.com"
+  source_arn     = aws_s3_bucket.processed_data_bucket.arn
+}
