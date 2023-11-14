@@ -23,7 +23,8 @@ resource "aws_lambda_function" "ingester_lambda" {
       DB_PASSWORD = var.db_password
     }
     }
-    depends_on = [ aws_lambda_layer_version.lambda_layer ]
+    depends_on = [ aws_lambda_layer_version.lambda_layer,
+    aws_cloudwatch_log_group.ingester_lambda ]
   }
 
 resource "aws_lambda_permission" "allow_eventbridge" {
