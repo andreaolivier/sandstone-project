@@ -171,7 +171,7 @@ def test_get_latest_file_raises_file_type_error(caplog):
 #         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
 #     )
 
-#     with open('./example_data/13-33.json') as f:
+#     with open('./test_data/13-33.json') as f:
 #         test_data = json.load(f)
 #     client.put_object(
 #             Body=json.dumps(test_data),
