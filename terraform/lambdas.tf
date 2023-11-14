@@ -6,7 +6,7 @@ resource "aws_lambda_function" "ingester_lambda" {
     role = aws_iam_role.ingester_role.arn
     runtime = "python3.11"
     handler = "ingester.ingestion_handler"
-    layers = ["arn:aws:lambda:eu-west-2:572843110802:layer:updated_layer:2"]
+    layers = [aws_lambda_layer_version.automated_layer.arn]
     timeout = 60
     environment {
       variables = {
@@ -17,8 +17,7 @@ resource "aws_lambda_function" "ingester_lambda" {
       DB_PASSWORD = var.db_password
     }
 }
-    depends_on = [ aws_lambda_layer_version.lambda_layer ]
-  }
+}
 
 resource "aws_lambda_permission" "allow_eventbridge" {
     action         = "lambda:InvokeFunction"
@@ -35,7 +34,7 @@ resource "aws_lambda_function" "process_lambda" {
     role = aws_iam_role.process_role.arn
     runtime = "python3.11"
     handler = "processing_handler.processing_handler"
-    layers = ["arn:aws:lambda:eu-west-2:572843110802:layer:updated_layer:1", 
+    layers = [aws_lambda_layer_version.automated_layer.arn, 
     "arn:aws:lambda:eu-west-2:336392948345:layer:AWSSDKPandas-Python311:3"]
     timeout = 60
     environment {
@@ -64,7 +63,7 @@ resource "aws_lambda_function" "upload_lambda" {
     role = aws_iam_role.upload_role.arn
     runtime = "python3.11"
     handler = "upload.lambda_handler"
-    layers = ["arn:aws:lambda:eu-west-2:572843110802:layer:updated_layer:1", 
+    layers = [aws_lambda_layer_version.automated_layer.arn, 
     "arn:aws:lambda:eu-west-2:336392948345:layer:AWSSDKPandas-Python311:3"]
     timeout = 60
     environment {
