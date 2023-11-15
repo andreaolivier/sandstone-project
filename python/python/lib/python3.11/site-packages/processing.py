@@ -40,7 +40,7 @@ def to_dim_counter_party(data):
                                               [i-1] for i in
                                               data["counterparty"]
                                               ["legal_address_id"]],
-        "counterparty_legal_address_line2": [address_data
+        "counterparty_legal_address_line_2": [address_data
                                              ["address_line_2"]
                                              [i-1] for i in
                                              data["counterparty"]
