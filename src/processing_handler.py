@@ -2,9 +2,9 @@ import boto3
 import json
 import logging
 from botocore.exceptions import ClientError
-from processing import to_dim_date, get_currency_data, dim_counter_party, \
-    make_new_design_table, to_dim_location, create_dim_staff, \
-    fact_sales_util, parquet_converter
+from processing import to_dim_date, to_dim_currency, to_dim_counter_party, \
+    to_dim_design, to_dim_location, to_dim_staff, \
+    to_fact_sales, parquet_converter
 
 
 logger = logging.getLogger('TransformLogger')
@@ -32,12 +32,12 @@ def processing_handler(event, context):
             processed_table_names.append('dim_date')
 
         utils_dict = {
-            'currency': get_currency_data,
-            'counterparty': dim_counter_party,
-            'design': make_new_design_table,
+            'currency': to_dim_currency,
+            'counterparty': to_dim_counter_party,
+            'design': to_dim_design,
             'address': to_dim_location,
-            'staff': create_dim_staff,
-            'sales_order': fact_sales_util,
+            'staff': to_dim_staff,
+            'sales_order': to_fact_sales,
         }
 
         lookup = {

@@ -1,6 +1,6 @@
-from processing import get_currency_data
+from processing import to_dim_currency
 
-TEST_INPUT_DATA = {"currency": {
+TEST_DATA = {"currency": {
     "currency_id": [1, 2, 3],
     "currency_code": ["GBP", "USD", "EUR"],
     "created_at": [
@@ -17,15 +17,15 @@ TEST_INPUT_DATA = {"currency": {
 
 
 def test_dict_has_correct_keys():
-    assert list(get_currency_data(TEST_INPUT_DATA).keys()) == [
+    assert list(to_dim_currency(TEST_DATA).keys()) == [
         "currency_id", "currency_code", "currency_name"]
 
 
 def test_dict_has_3_id_and_3_code():
-    assert len(get_currency_data(TEST_INPUT_DATA)['currency_id']) == 3
-    assert len(get_currency_data(TEST_INPUT_DATA)['currency_code']) == 3
-    assert len(get_currency_data(TEST_INPUT_DATA)['currency_name']) == 3
+    assert len(to_dim_currency(TEST_DATA)['currency_id']) == 3
+    assert len(to_dim_currency(TEST_DATA)['currency_code']) == 3
+    assert len(to_dim_currency(TEST_DATA)['currency_name']) == 3
 
 
 def test_get_currency_data_returns_dict():
-    assert isinstance(get_currency_data(TEST_INPUT_DATA), dict)
+    assert isinstance(to_dim_currency(TEST_DATA), dict)

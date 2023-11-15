@@ -7,7 +7,7 @@ from moto import mock_s3
 import boto3
 import botocore
 from datetime import datetime
-from ingester import ingestion_handler
+from ingestion_handler import ingestion_handler
 
 
 @pytest.fixture
@@ -73,8 +73,8 @@ def test_ingestion_handler_creates_object_if_bucket_empty_with_data():
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
 
-    with patch('ingester.get_all_table_data') as get_table:
-        with patch('ingester.dt') as dt:
+    with patch('ingestion_handler.get_all_table_data') as get_table:
+        with patch('ingestion_handler.dt') as dt:
             dt.today.return_value = datetime(
                 2023, 11, 1, 12, 29, 7, 908653)
 
@@ -140,8 +140,8 @@ def test_creates_s3_object_if_bucket_is_empty_with_database_data():
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
 
-    with patch('ingester.get_all_table_data') as get_table:
-        with patch('ingester.dt') as dt:
+    with patch('ingestion_handler.get_all_table_data') as get_table:
+        with patch('ingestion_handler.dt') as dt:
             dt.today.return_value = datetime(
                 2023, 11, 1, 12, 29, 7, 908653)
 
@@ -239,8 +239,8 @@ def test_creates_s3_object_if_bucket_has_objects_with_database_data_with_obj():
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
 
-    with patch('ingester.get_all_table_data') as get_table:
-        with patch('ingester.dt') as dt:
+    with patch('ingestion_handler.get_all_table_data') as get_table:
+        with patch('ingestion_handler.dt') as dt:
             dt.today.return_value = datetime(
                 2023, 11, 1, 12, 29, 7, 908653)
             get_table.return_value = data

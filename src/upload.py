@@ -4,6 +4,7 @@ import pg8000.dbapi
 import logging
 import os
 from botocore.exceptions import ClientError
+import time
 
 logger = logging.getLogger('MyLogger')
 logger.setLevel(logging.INFO)
@@ -25,8 +26,11 @@ def lambda_handler(event, context):
 
         logger.info('Bucket is %s', s3_bucket_name)
         logger.info('Object key is %s', s3_object_name)
-
-        if s3_object_name[-7] != 'parquet':
+        
+        if s3_object_name == 'fact_sales_order.parquet':
+            time.sleep(7)
+        
+        if s3_object_name[-7:] != 'parquet':
             raise InvalidFileTypeError
 
         df = wr.s3.read_parquet(
@@ -41,9 +45,9 @@ def lambda_handler(event, context):
         for row in table_dict['data']:
             cursor.execute(
                 f"INSERT INTO project_team_7.{table_name} "
-                f" VALUES ({placeholders}) ",
-                tuple(f'{str(i)}' for i in row)
-            )
+                f"({', '.join([i for i in table_dict['columns']])}) "
+                f"VALUES ({placeholders})", tuple(f'{str(i)}' for i in row)
+                            )
 
         conn.commit()
         logger.info('upload success')
@@ -57,7 +61,7 @@ def lambda_handler(event, context):
         else:
             raise
     except UnicodeError:
-        logger.error(f'File {s3_object_name} is not a valid text file')
+        logger.error(f'File {s3_object_name} unicode error')
     except InvalidFileTypeError:
         logger.error(f'File {s3_object_name} is not a valid text file')
     except Exception as e:

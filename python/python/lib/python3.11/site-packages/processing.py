@@ -11,7 +11,7 @@ logger = logging.getLogger('processinglogger')
 logger.setLevel(logging.INFO)
 
 
-def dim_counter_party(data):
+def to_dim_counter_party(data):
     """
     The dim_counter_party function first checks if the input data is a dict.
     If yes, it creates the dimension table else it throws a type error
@@ -40,11 +40,11 @@ def dim_counter_party(data):
                                               [i-1] for i in
                                               data["counterparty"]
                                               ["legal_address_id"]],
-        "counterparty_legal_address_line2": [address_data
-                                             ["address_line_2"]
-                                             [i-1] for i in
-                                             data["counterparty"]
-                                             ["legal_address_id"]],
+        "counterparty_legal_address_line_2": [address_data
+                                              ["address_line_2"]
+                                              [i-1] for i in
+                                              data["counterparty"]
+                                              ["legal_address_id"]],
         "counterparty_legal_district": [address_data
                                         ["district"]
                                         [i-1] for i in
@@ -75,7 +75,7 @@ def dim_counter_party(data):
     return dim_counterparty
 
 
-def get_currency_data(data):
+def to_dim_currency(data):
     logger.info('CURRENCY DATA')
     '''Takes a dict of dicts as arguments and returns a dict
     with keys 'currency_id', 'currency_code' and 'currency_name'
@@ -118,12 +118,12 @@ def to_dim_date():
     return dim_date
 
 
-def make_new_design_table(big_dict):
+def to_dim_design(data):
     logger.info('DESIGN TABLE')
     '''This takes the full data dictionary and returns a dictionary'''
     '''containing lists of the appropriate columns, '''
     '''maintaining the same structure otherwise.'''
-    design_table = big_dict['design']
+    design_table = data['design']
 
     design_columns = ['design_id', 'design_name', 'file_location', 'file_name']
 
@@ -156,7 +156,7 @@ def to_dim_location(data):
     return dim_location
 
 
-def create_dim_staff(dict):
+def to_dim_staff(data):
     try:
         logger.info('DIM STAFF')
 
@@ -169,14 +169,14 @@ def create_dim_staff(dict):
         )
         dept_data = get_table_data(conn, 'department')
         dim_staff = {
-            'staff_id': dict['staff']['staff_id'],
-            'first_name': dict['staff']['first_name'],
-            'last_name': dict['staff']['last_name'],
+            'staff_id': data['staff']['staff_id'],
+            'first_name': data['staff']['first_name'],
+            'last_name': data['staff']['last_name'],
             'department_name': [dept_data['department_name'][id - 1]
-                                for id in dict['staff']['department_id']],
+                                for id in data['staff']['department_id']],
             'location': [dept_data['location'][id - 1]
-                         for id in dict['staff']['department_id']],
-            'email_address': dict['staff']['email_address']
+                         for id in data['staff']['department_id']],
+            'email_address': data['staff']['email_address']
         }
         return (dim_staff)
     except KeyError:
@@ -187,7 +187,7 @@ def create_dim_staff(dict):
         return (e)
 
 
-def fact_sales_util(big_dict):
+def to_fact_sales(data):
     """Returns the names of all the columns in the passed table from the
     connected PSQL database.
         Parameters:
@@ -196,22 +196,26 @@ def fact_sales_util(big_dict):
     """
     logger.info('FACT SALES')
 
-    salesorder = big_dict['sales_order']
-    created_at = salesorder['created_at']
-    last_updated = salesorder['last_updated']
+    sales = data['sales_order']
+    created_at = sales['created_at']
+    last_updated = sales['last_updated']
 
-    new_table = {
-        'created_time': [date[11:] for date in created_at],
+    return {
+        'sales_order_id': sales['sales_order_id'],
         'created_date': [date[:10] for date in created_at],
+        'created_time': [date[11:] for date in created_at],
+        'last_updated_date': [date[:10] for date in last_updated],
         'last_updated_time': [date[11:] for date in last_updated],
-        'last_updated_date': [date[:10] for date in last_updated]
+        'sales_staff_id': sales['staff_id'],
+        'counterparty_id': sales['counterparty_id'],
+        'units_sold': sales['units_sold'],
+        'unit_price': sales['unit_price'],
+        'currency_id': sales['currency_id'],
+        'design_id': sales['design_id'],
+        'agreed_payment_date': sales['agreed_payment_date'],
+        'agreed_delivery_date': sales['agreed_delivery_date'],
+        'agreed_delivery_location_id': sales['agreed_delivery_location_id']
     }
-
-    for key in salesorder.keys():
-        if key not in ['created_at', 'last_updated'] and key not in new_table:
-            new_table[key] = salesorder[key]
-
-    return new_table
 
 
 def parquet_converter(table_dicts, names_of_tables, s3):
