@@ -1,12 +1,13 @@
 # Ingestion lambda
 
 resource "aws_lambda_function" "ingester_lambda" {
-    filename = "${path.module}/../ingester.zip"
+    filename = "${path.module}/../ingestion_handler.zip"
     function_name = "${var.lambda_name}"
     role = aws_iam_role.ingester_role.arn
     runtime = "python3.11"
     handler = "ingester.ingestion_handler"
     layers = [aws_lambda_layer_version.automated_layer.arn]
+
     timeout = 60
     environment {
       variables = {
