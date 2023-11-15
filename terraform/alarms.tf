@@ -105,6 +105,7 @@ resource "aws_cloudwatch_log_metric_filter" "upload_metric_filter" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "upload_metric_alarm" {
+  metric_name = "ErrorCount"
   alarm_name = "UploadErrorAlarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods = 1
