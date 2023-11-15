@@ -10,7 +10,7 @@ resource "aws_s3_bucket_notification" "processor_lambda_notification" {
   #This resource creates a bucket notification in the ingested data bucket.
   #This should send an event to the processer lambda, triggering it to run on the new object.
   #The s3:ObjectCreated:Put line in events should restrict it triggering to a put command, 
-  #which matches the put_object command used in the ingester.py.
+  #which matches the put_object command used in the ingestion_handler.py.
   #filter_suffix should restrict valid objects for the trigger to .json files.
   #All of this should require a matching permission in the process lambda.
 
