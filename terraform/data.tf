@@ -19,3 +19,9 @@ data "archive_file" "upload_lambda" {
     source_file = "${path.module}/../src/upload.py"
     output_path = "${path.module}/../upload.zip"
 }
+
+data "archive_file" "layer_zip" {
+    type = "zip"
+    source_dir = "${path.module}/../python"
+    output_path = "${path.module}/../custom_layer.zip"
+    }

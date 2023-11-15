@@ -24,7 +24,7 @@ resource "aws_cloudwatch_log_metric_filter" "ingester_error_filtering" {
 		namespace = "IngesterLogging"
 		value = "1"
 		}
-    depends_on = [ aws_lambda_function.ingester_lambda ]
+    depends_on = [ aws_cloudwatch_log_group.ingester_lambda ]
 	}
 
 
@@ -70,7 +70,7 @@ resource "aws_cloudwatch_log_metric_filter" "process_error_filtering" {
 		namespace = "ProcessLogging"
 		value = "1"
 		}
-    depends_on = [ aws_lambda_function.process_lambda ]
+    depends_on = [ aws_cloudwatch_log_group.process_lambda ]
 	}
 
 
