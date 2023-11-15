@@ -4,8 +4,8 @@ data "aws_region" "current" {}
 
 data "archive_file" "ingester_lambda" {
     type = "zip"
-    source_file = "${path.module}/../src/ingester.py"
-    output_path = "${path.module}/../ingester.zip"
+    source_file = "${path.module}/../src/ingestion_handler.py"
+    output_path = "${path.module}/../ingestion_handler.zip"
 }
 
 data "archive_file" "process_lambda" {
