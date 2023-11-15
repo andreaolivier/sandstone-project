@@ -1,7 +1,7 @@
 from processing import to_dim_location
 import json
 
-with open('./example_data/11-43.json') as f:
+with open('./test_data/11-43.json') as f:
     test_data = json.load(f)
 
 
