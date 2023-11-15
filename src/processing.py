@@ -41,10 +41,10 @@ def to_dim_counter_party(data):
                                               data["counterparty"]
                                               ["legal_address_id"]],
         "counterparty_legal_address_line_2": [address_data
-                                             ["address_line_2"]
-                                             [i-1] for i in
-                                             data["counterparty"]
-                                             ["legal_address_id"]],
+                                              ["address_line_2"]
+                                              [i-1] for i in
+                                              data["counterparty"]
+                                              ["legal_address_id"]],
         "counterparty_legal_district": [address_data
                                         ["district"]
                                         [i-1] for i in
@@ -196,22 +196,26 @@ def to_fact_sales(data):
     """
     logger.info('FACT SALES')
 
-    salesorder = data['sales_order']
-    created_at = salesorder['created_at']
-    last_updated = salesorder['last_updated']
+    sales = data['sales_order']
+    created_at = sales['created_at']
+    last_updated = sales['last_updated']
 
-    new_table = {
-        'created_time': [date[11:] for date in created_at],
+    return {
+        'sales_order_id': sales['sales_order_id'],
         'created_date': [date[:10] for date in created_at],
+        'created_time': [date[11:] for date in created_at],
+        'last_updated_date': [date[:10] for date in last_updated],
         'last_updated_time': [date[11:] for date in last_updated],
-        'last_updated_date': [date[:10] for date in last_updated]
+        'sales_staff_id': sales['staff_id'],
+        'counterparty_id': sales['counterparty_id'],
+        'units_sold': sales['units_sold'],
+        'unit_price': sales['unit_price'],
+        'currency_id': sales['currency_id'],
+        'design_id': sales['design_id'],
+        'agreed_payment_date': sales['agreed_payment_date'],
+        'agreed_delivery_date': sales['agreed_delivery_date'],
+        'agreed_delivery_location_id': sales['agreed_delivery_location_id']
     }
-
-    for key in salesorder.keys():
-        if key not in ['created_at', 'last_updated'] and key not in new_table:
-            new_table[key] = salesorder[key]
-
-    return new_table
 
 
 def parquet_converter(table_dicts, names_of_tables, s3):
