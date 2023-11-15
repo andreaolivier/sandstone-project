@@ -4,8 +4,8 @@ data "aws_region" "current" {}
 
 data "archive_file" "ingester_lambda" {
     type = "zip"
-    source_file = "${path.module}/../src/ingester.py"
-    output_path = "${path.module}/../ingester.zip"
+    source_file = "${path.module}/../src/ingestion_handler.py"
+    output_path = "${path.module}/../ingestion_handler.zip"
 }
 
 data "archive_file" "process_lambda" {
@@ -19,3 +19,9 @@ data "archive_file" "upload_lambda" {
     source_file = "${path.module}/../src/upload.py"
     output_path = "${path.module}/../upload.zip"
 }
+
+data "archive_file" "layer_zip" {
+    type = "zip"
+    source_dir = "${path.module}/../python"
+    output_path = "${path.module}/../custom_layer.zip"
+    }

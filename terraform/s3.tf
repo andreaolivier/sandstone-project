@@ -10,7 +10,7 @@ resource "aws_s3_bucket_notification" "processor_lambda_notification" {
   #This resource creates a bucket notification in the ingested data bucket.
   #This should send an event to the processer lambda, triggering it to run on the new object.
   #The s3:ObjectCreated:Put line in events should restrict it triggering to a put command, 
-  #which matches the put_object command used in the ingester.py.
+  #which matches the put_object command used in the ingestion_handler.py.
   #filter_suffix should restrict valid objects for the trigger to .json files.
   #All of this should require a matching permission in the process lambda.
 
@@ -35,12 +35,4 @@ resource "aws_s3_bucket_notification" "upload_lambda_notification" {
     filter_suffix = ".parquet"
     }
   depends_on = [aws_lambda_permission.parquet_object_added]
-}
-
-resource "aws_lambda_permission" "parquet_object_added" {
-  action         = "lambda:InvokeFunction"
-  function_name  = aws_lambda_function.upload_lambda.function_name
-  principal      = "s3.amazonaws.com"
-  source_arn     = aws_s3_bucket.processed_data_bucket.arn
-  depends_on = [ aws_cloudwatch_log_group.upload_lambda ]
 }

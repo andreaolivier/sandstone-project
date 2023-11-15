@@ -1,4 +1,4 @@
-from processing import make_new_design_table
+from processing import to_dim_design
 import pytest
 
 
@@ -33,14 +33,14 @@ def sample_data_table():
 
 
 def test_design_table_returns_dict_of_lists(sample_data_table):
-    output = make_new_design_table(sample_data_table)
+    output = to_dim_design(sample_data_table)
     assert isinstance(output, dict)
     for i in output:
         assert isinstance(output[i], list)
 
 
 def test_design_table_returns_correct_dict(sample_data_table):
-    output = make_new_design_table(sample_data_table)
+    output = to_dim_design(sample_data_table)
     assert output == {
         "design_id": [7, 8, 5, 4],
         "design_name": ["Wooden", "Wooden", "Granite", "Granite"],
@@ -54,7 +54,7 @@ def test_design_table_returns_correct_dict(sample_data_table):
 
 def test_design_does_not_mutate_input(sample_data_table):
     input = sample_data_table
-    make_new_design_table(input)
+    to_dim_design(input)
     assert input == {"design": {
         "design_id": [7, 8, 5, 4],
         "created_at": ["2022-11-03 14:20:49.962000",

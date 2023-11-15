@@ -1,5 +1,5 @@
 """Tests for fact_sales_util function"""
-from processing import fact_sales_util
+from processing import to_fact_sales
 
 
 def test_fact_sales_util_returns_correct_keys_when_theres_data_passed():
@@ -21,7 +21,7 @@ def test_fact_sales_util_returns_correct_keys_when_theres_data_passed():
         "agreed_delivery_location_id": []
     }, "test": "test"}
 
-    result = fact_sales_util(data)
+    result = to_fact_sales(data)
 
     expected_keys = ['created_time', 'created_date', 'last_updated_time',
                      'last_updated_date', 'sales_order_id', 'design_id',
@@ -177,7 +177,7 @@ def test_fact_sales_util_returns_correct_date_and_times():
         ]
     }, "test": "test"}
 
-    result = fact_sales_util(data)
+    result = to_fact_sales(data)
     expected = {
         "created_time": [
             "14:20:52.186000",

@@ -1,6 +1,6 @@
 import json
 import pytest
-from processing import dim_counter_party
+from processing import to_dim_counter_party
 
 
 def test_dim_counter_party_returns_a_dict():
@@ -9,7 +9,7 @@ def test_dim_counter_party_returns_a_dict():
     """
     with open('./test_data/11-43.json') as f:
         test_data = json.load(f)
-    result = dim_counter_party(test_data)
+    result = to_dim_counter_party(test_data)
     expected = dict
     assert isinstance(result, expected)
 
@@ -20,7 +20,7 @@ def test_dim_counter_party_returns_correct_values():
     """
     with open('./test_data/11-43.json') as f:
         test_data = json.load(f)
-    result = dim_counter_party(test_data)
+    result = to_dim_counter_party(test_data)
     expected_columns = [
         "counterparty_id",
         "counterparty_legal_name",
@@ -44,5 +44,5 @@ def test_dim_counter_party_for_type_error():
     We test here to make sure that the right data structure is passed in
     """
     with pytest.raises(TypeError) as err:
-        dim_counter_party(["abc"])
+        to_dim_counter_party(["abc"])
     assert str(err.value) == "Invalid data format"
