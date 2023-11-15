@@ -188,7 +188,7 @@ def test_processing_handler_creates_correct_tables(aws_credentials):
         CreateBucketConfiguration={'LocationConstraint': 'eu-west-2'}
     )
 
-    with open('./example_data/11-43.json') as f:
+    with open('./test_data/11-43.json') as f:
         ingested_data = json.load(f)
     client.put_object(
         Body=json.dumps(ingested_data),
