@@ -5,7 +5,7 @@ resource "aws_lambda_function" "ingester_lambda" {
     function_name = "${var.lambda_name}"
     role = aws_iam_role.ingester_role.arn
     runtime = "python3.11"
-    handler = "ingester.ingestion_handler"
+    handler = "ingestion_handler.ingestion_handler"
     layers = ["arn:aws:lambda:eu-west-2:572843110802:layer:updated_layer:2"]
     timeout = 60
     environment {
