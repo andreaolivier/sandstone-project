@@ -66,7 +66,7 @@ resource "aws_lambda_function" "upload_lambda" {
     handler = "upload.lambda_handler"
     layers = [aws_lambda_layer_version.automated_layer.arn, 
     "arn:aws:lambda:eu-west-2:336392948345:layer:AWSSDKPandas-Python311:3"]
-    timeout = 60
+    timeout = 180
     environment {
       variables = {
       DW_USER = var.dw_user,

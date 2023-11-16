@@ -28,7 +28,7 @@ def lambda_handler(event, context):
         logger.info('Object key is %s', s3_object_name)
         
         if s3_object_name == 'fact_sales_order.parquet':
-            time.sleep(7)
+            time.sleep(45)
         
         if s3_object_name[-7:] != 'parquet':
             raise InvalidFileTypeError
