@@ -1,4 +1,4 @@
-And all the grain of sand came together to form a stone that stands the test of time. #TeamSandStone-7
+*And all the grain of sand came together to form a stone that stands the test of time. #TeamSandStone-7*
 
 <h2>Sandstone ETL Pipeline</h2>
 
