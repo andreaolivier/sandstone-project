@@ -25,7 +25,7 @@ def test_dim_counter_party_returns_correct_values():
         "counterparty_id",
         "counterparty_legal_name",
         "counterparty_legal_address_line_1",
-        "counterparty_legal_address_line2",
+        "counterparty_legal_address_line_2",
         "counterparty_legal_district",
         "counterparty_legal_city",
         "counterparty_legal_postal_code",
