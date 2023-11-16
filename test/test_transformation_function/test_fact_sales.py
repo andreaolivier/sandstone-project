@@ -23,11 +23,12 @@ def test_fact_sales_util_returns_correct_keys_when_theres_data_passed():
 
     result = to_fact_sales(data)
 
-    expected_keys = ['created_time', 'created_date', 'last_updated_time',
-                     'last_updated_date', 'sales_order_id', 'design_id',
-                     'staff_id', 'counterparty_id', 'units_sold', 'unit_price',
-                     'currency_id', 'agreed_delivery_date',
-                     'agreed_payment_date', 'agreed_delivery_location_id']
+    expected_keys = ['sales_order_id', 'created_date', 'created_time',
+                     'last_updated_date', 'last_updated_time',
+                     'sales_staff_id', 'counterparty_id', 'units_sold',
+                     'unit_price', 'currency_id', 'design_id',
+                     'agreed_payment_date', 'agreed_delivery_date',
+                     'agreed_delivery_location_id']
 
     print(list(result.keys()))
 
@@ -273,7 +274,7 @@ def test_fact_sales_util_returns_correct_date_and_times():
         ],
         "design_id": [9, 3, 4, 4, 7, 3, 7, 2, 3, 9, 2, 7, 6, 9, 7, 13, 5, 4,
                       56, 4],
-        "staff_id": [
+        "sales_staff_id": [
             16, 19, 10, 10, 18, 13, 11, 11, 16, 14, 8, 3, 11, 7, 20, 13, 18, 7,
             20,
             16
