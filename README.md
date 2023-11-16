@@ -54,9 +54,14 @@ Flake8: we used flake8 to ensure we met pep8 compliance to maintain clean, reada
 <h3>The team</h3>
 
 Andrea Olivier, aka andreaolivier
+
 George Baldwin, aka GeorgeJB3
+
 John Mustchin, aka Human0467
+
 Sesan Olaiya, aka sesanolaiya
+
 Pablo Bravo Galindo, aka pablobgldo
+
 Ian Russell, aka ian512549
 
